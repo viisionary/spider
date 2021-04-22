@@ -39,5 +39,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "axios": "^0.21.1",
+    "history": "^5.0.0",
+    "xstate": "^4.18.0"
   }
 }
