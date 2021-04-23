@@ -2,8 +2,11 @@ const createProxyMiddleware = require("http-proxy-middleware");
 
 module.exports = function (app) {
   app.use(
-    createProxyMiddleware(["/login", "/callback", "/logout", "/checkAuth"], {
-      target: `http://localhost:3001`,
+    createProxyMiddleware('/api', {
+      target: `http://10.1.29.252:3000/mock/113/`,
+	    pathRewrite: {
+		    '^/api': '/', // rewrite path
+	    },
       changeOrigin: true,
       logLevel: "debug",
     })

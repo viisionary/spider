@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
-
+import { history } from "./utils/historyUtils";
+import { Router } from 'react-router-dom';
+import {createMuiTheme, ThemeProvider } from '@material-ui/core';
+import { orange } from '@material-ui/core/colors';
+const theme = createMuiTheme({
+    palette: {
+        // primary:{
+        //     main: orange[500],
+        // },
+        secondary: {
+            main: orange[500],
+        },
+    },
+});
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+      <Router history={history}>
+          <ThemeProvider theme={theme}>
+          <App />
+          </ThemeProvider>
+      </Router>
+</React.StrictMode>,
   document.getElementById('root')
 );
 
