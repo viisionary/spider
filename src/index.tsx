@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
-import { history } from "./utils/historyUtils";
-import { Router } from 'react-router-dom';
-import {createMuiTheme, ThemeProvider } from '@material-ui/core';
-import { orange } from '@material-ui/core/colors';
+import {history} from "./utils/historyUtils";
+import {Router} from 'react-router-dom';
+import {createMuiTheme, ThemeProvider} from '@material-ui/core';
+import {orange} from '@material-ui/core/colors';
+
 const theme = createMuiTheme({
     palette: {
         // primary:{
@@ -17,15 +18,17 @@ const theme = createMuiTheme({
         },
     },
 });
+/* istanbul ignore next */
+const onRedirectCallback = (appState: any) => {
+    history.replace((appState && appState.returnTo) || window.location.pathname);
+};
 ReactDOM.render(
-  <React.StrictMode>
-      <Router history={history}>
-          <ThemeProvider theme={theme}>
-          <App />
-          </ThemeProvider>
-      </Router>
-</React.StrictMode>,
-  document.getElementById('root')
+    <Router history={history}>
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>
+    </Router>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

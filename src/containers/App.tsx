@@ -1,10 +1,10 @@
-import React from 'react';
-import {Box, Button, Container, makeStyles} from "@material-ui/core";
+import React, {useEffect} from 'react';
+import {CssBaseline, makeStyles} from "@material-ui/core";
 import {authService} from "../machines/authMachine";
 import {useService, useMachine} from "@xstate/react";
 import AlertBar from '../components/AlertBar';
 import {snackbarMachine} from '../machines/snackbarMachine';
-import {Switch, Route, Redirect} from "react-router-dom";
+import {Switch, Route, Redirect,} from "react-router-dom";
 import SignInForm from "./SignInForm";
 import bg from '../image/bg.jpg'
 import PrivateRoutesContainer from "./PrivateRoutesContainer";
@@ -15,12 +15,13 @@ const useStyles = makeStyles((theme) => ({
         background: `url(${bg}) center`,
         display: "flex",
         width: '100%',
-        height:'100vh',
+        height: '100vh',
         flexDirection: 'column',
     },
 }));
 
 const UnLoggedInRoutes: React.FC = () => {
+    console.log('UnLoggedInRoutes')
     return (<Switch>
         <Route exact path="/signin">
             <SignInForm authService={authService} />
@@ -44,8 +45,14 @@ const App: React.FC = () => {
     const unauthorized = authState.matches("unauthorized")
     const [, , ItemsService] = useMachine(ItemsMachine);
 
+    useEffect(()=>{
+        console.log('render！')
+
+    })
+    console.log('render了！')
     return (
         <div className={classes.root}>
+            <CssBaseline />
             {isLoggedIn && (
                 <PrivateRoutesContainer
                     isLoggedIn={isLoggedIn}
@@ -54,7 +61,7 @@ const App: React.FC = () => {
                     ItemsService={ItemsService}
                 />
             )}
-            {unauthorized && <UnLoggedInRoutes/>}
+            {unauthorized && <UnLoggedInRoutes />}
             <AlertBar snackbarService={snackbarService} />
         </div>
     )
