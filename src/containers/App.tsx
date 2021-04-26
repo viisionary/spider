@@ -4,7 +4,7 @@ import {authService} from "../machines/authMachine";
 import {useService, useMachine} from "@xstate/react";
 import AlertBar from '../components/AlertBar';
 import {snackbarMachine} from '../machines/snackbarMachine';
-import {Switch, Route, Redirect,} from "react-router-dom";
+import {Switch, Route, Link, Redirect, useHistory, useLocation,} from "react-router-dom";
 import SignInForm from "./SignInForm";
 import bg from '../image/bg.jpg'
 import PrivateRoutesContainer from "./PrivateRoutesContainer";
@@ -21,19 +21,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UnLoggedInRoutes: React.FC = () => {
-    console.log('UnLoggedInRoutes')
-    return (<Switch>
-        <Route exact path="/signin">
-            <SignInForm authService={authService} />
-        </Route>
-        <Route path="/*">
-            <Redirect
-                to={{
-                    pathname: "/signin",
-                }}
-            />
-        </Route>
-    </Switch>)
+    return (
+        <Switch>
+            <Route exact path="/signin">
+                <SignInForm authService={authService} />
+            </Route>
+        </Switch>)
 }
 const App: React.FC = () => {
     const classes = useStyles();
@@ -45,11 +38,6 @@ const App: React.FC = () => {
     const unauthorized = authState.matches("unauthorized")
     const [, , ItemsService] = useMachine(ItemsMachine);
 
-    useEffect(()=>{
-        console.log('render！')
-
-    })
-    console.log('render了！')
     return (
         <div className={classes.root}>
             <CssBaseline />

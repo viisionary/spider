@@ -64,7 +64,6 @@ const ItemDetailsContainer: React.FC<Props> = () => {
                 {showParticipants && <Grid item xs={4}>
 									<List>
 										<ListItem alignItems="flex-start">
-                        {/*<ListItemAvatar/>*/}
 											<ListItemText
 												primary="Brunch this weekend?"
 												secondary={

@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {useService} from "@xstate/react";
-import {ItemsMachine} from "../machines/ItemsMachine";
 import {Interpreter} from 'xstate';
 import {DataContext, DataEvents} from '../machines/dataMachine';
 import Cards from "../components/Cards";
@@ -16,14 +15,9 @@ const actions = [
 
 const ItemsContainer: React.FC<Props> = ({ItemsService}) => {
     const [ItemsState, sendItems] = useService(ItemsService);
-
-    console.log('---')
-    console.log(ItemsState?.context.results!)
     useEffect(() => {
         sendItems("FETCH");
     }, [sendItems]);
-
-    console.log(ItemsState)
     return (<div>
         <Cards items={ItemsState?.context.results!} />
         <SpeedDials actions={actions} />

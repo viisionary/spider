@@ -1,7 +1,7 @@
 import React from "react";
 import {Interpreter} from "xstate";
 import {useService} from "@xstate/react";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {
     Button,
     CssBaseline,
@@ -64,7 +64,9 @@ const SignInForm: React.FC<Props> = ({authService}) => {
         password: "",
         remember: undefined,
     };
-
+    let location = useLocation();
+    console.log(location)
+    console.log('UnLoggedInRoutes')
     const signInPending = (payload: SignInPayload) => sendAuth({type: "LOGIN", ...payload});
 
     return (

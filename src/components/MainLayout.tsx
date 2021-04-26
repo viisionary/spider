@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {Interpreter} from "xstate";
 import {AuthMachineContext, AuthMachineEvents} from "../machines/authMachine";
-import { makeStyles, Container, Grid, useMediaQuery, useTheme } from "@material-ui/core";
+import {makeStyles, Container, Grid, useMediaQuery, useTheme} from "@material-ui/core";
 import NavBar from "./NavBar";
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
     authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
     // notificationsService: Interpreter<DataContext, any, DataEvents, any>;
 }
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
@@ -41,7 +42,7 @@ const MainLayout: React.FC<Props> = ({children, authService}) => {
     const classes = useStyles();
     return (
         <>
-            <NavBar/>
+            <NavBar />
             <Container maxWidth="md" className={classes.container}>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
