@@ -11,11 +11,12 @@ import PrivateRoutesContainer from "./PrivateRoutesContainer";
 import {ItemsMachine} from "../machines/ItemsMachine";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+    topRoot: {
         background: `url(${bg}) center`,
         display: "flex",
-        width: '100%',
-        height: '100vh',
+        flexGrow: 1,
+        height: "100vh",
+        overflow: "hidden",
         flexDirection: 'column',
     },
 }));
@@ -25,6 +26,13 @@ const UnLoggedInRoutes: React.FC = () => {
         <Switch>
             <Route exact path="/signin">
                 <SignInForm authService={authService} />
+            </Route>
+            <Route path="/*">
+                <Redirect
+                    to={{
+                        pathname: "/signin",
+                    }}
+                />
             </Route>
         </Switch>)
 }
@@ -39,7 +47,7 @@ const App: React.FC = () => {
     const [, , ItemsService] = useMachine(ItemsMachine);
 
     return (
-        <div className={classes.root}>
+        <div className={classes.topRoot}>
             <CssBaseline />
             {isLoggedIn && (
                 <PrivateRoutesContainer

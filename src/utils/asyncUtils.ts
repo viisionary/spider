@@ -1,24 +1,35 @@
 import dotenv from "dotenv";
 import axios from "axios";
+// import {globalShowSnackbar} from "../containers/App";
 
 dotenv.config();
-
+export const delay = (ms: number, params: any = {}) => new Promise((res): any => {
+    setTimeout(() => {
+        res(params)
+    }, ms);
+});
 const httpClient = axios.create({
-  withCredentials: true,
+    withCredentials: true,
 });
-
 httpClient.interceptors.request.use((config: any) => {
-  /* istanbul ignore if */
-  if (
-    process.env.REACT_APP_AUTH0 ||
-    process.env.REACT_APP_OKTA ||
-    process.env.REACT_APP_AWS_COGNITO ||
-    process.env.REACT_APP_GOOGLE
-  ) {
-    const accessToken = localStorage.getItem(process.env.REACT_APP_AUTH_TOKEN_NAME!);
+    const accessToken = localStorage.getItem('Authorization');
+    config.timeout = 5000;
     config.headers["Authorization"] = `Bearer ${accessToken}`;
-  }
-  return config;
+    return config;
 });
+httpClient.interceptors.response.use(async function (response) {
+    // 2xx 范围内的状态码都会触发该函数。
+    // await delay(2000)
+    return response;
+}, function (error) {
 
-export { httpClient };
+    // 超出 2xx 范围的状态码都会触发该函数。
+
+    // globalShowSnackbar({
+    //     severity: "error",
+    //     message: error.response.data?.msg
+    // })
+
+    return Promise.reject(error);
+});
+export {httpClient};

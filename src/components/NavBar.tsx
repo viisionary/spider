@@ -18,6 +18,12 @@ import {Link} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        appBarSpacer: {
+            // height: '11vh',
+            // [theme.breakpoints.up("sm")]: {
+            //     minHeight: theme.spacing(8),
+            // },
+        },
         grow: {
             flexGrow: 1,
         },
@@ -165,7 +171,7 @@ export default function NavBar() {
     );
 
     return (
-        <div>
+        <div className={classes.appBarSpacer}>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton

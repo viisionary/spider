@@ -65,7 +65,13 @@ const ItemCreateContainer: React.FC<Props> = () => {
 
 
     return (<Container component="main" maxWidth="xs">
-        <PresetForm {...{validationSchema, initialValues, fields}} />
+        <PresetForm {...{validationSchema, initialValues, fields,validate:(values:any)=>{},
+            // validationSchema,
+            // initialValues,
+            // validate,
+            // fields: conferenceFields,
+            submitText: '发起会议',
+            submitPending: ()=>{}}} />
     </Container>)
 }
 export default ItemCreateContainer;

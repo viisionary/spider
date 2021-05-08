@@ -22,8 +22,16 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            flexGrow: 1,
-            flexDirection: 'row'
+            // flexDirection: 'row',
+            minWidth: '800px',
+            // overf
+            height: '2000px',
+            // paddingRight: theme.spacing(1),
+            // // 比sm大的时候用4，小的时候用1
+            // [theme.breakpoints.up("sm")]: {
+            //     paddingRight: theme.spacing(0),
+            // },
+            // paddingRight: theme.spacing(2),
         },
         paper: {
             height: 140,
@@ -78,8 +86,7 @@ const ItemDetailsContainer: React.FC<Props> = () => {
                                 </Typography>
                                 {" — I'll be in your neighborhood doing errands this…"}
                             </React.Fragment>
-                        }
-											/>
+                        } />
 										</ListItem>
 									</List>
 								</Grid>}

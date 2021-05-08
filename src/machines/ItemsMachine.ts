@@ -7,7 +7,7 @@ export const ItemsMachine = dataMachine('items').withConfig({
     services: {
         fetchData: async (ctx, event: any) => {
             const payload = omit("type", event);
-            const resp = await httpClient.get(`/api/${items}`, {
+            const resp = await httpClient.get(`http://vue.ruoyi.vip/api/${items}`, {
                 params: !isEmpty(payload) && event.type === "FETCH" ? payload : undefined,
             });
             return resp.data;

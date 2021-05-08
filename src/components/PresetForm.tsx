@@ -1,16 +1,41 @@
 import {Field, FieldProps, Form, Formik} from "formik";
-import {Button, Checkbox, FormControlLabel, TextField} from "@material-ui/core";
+import {
+    Button,
+    Card,
+    Checkbox,
+    Container,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    FormLabel,
+    makeStyles,
+    Radio,
+    RadioGroup,
+    TextField
+} from "@material-ui/core";
 import React from "react";
+// import {delay} from "../utils/asyncUtils";
 
-interface PresetFormProps {
+export interface PresetFormProps {
     initialValues: object,
     validationSchema: object,
     fields: PresetFieldProps[],
+    submitText: string,
+    submitPending: (values: any) => void,
+    validate: (values: any) => any,
+    // validate: <valuesType, ErrorType>(values: valuesType) => ErrorType
 }
 
 type depend = {
     id: string,
     value: string[]
+}
+
+type option = {
+    label: string,
+    value: string | number,
+    exclude?: depend[],
+    depend?: depend[]
 }
 
 interface PresetFieldProps {
@@ -21,6 +46,8 @@ interface PresetFieldProps {
     canEdit?: boolean,
     depend?: depend,
     original?: object,
+    staticOptions?: option[],
+    required?: boolean,
 }
 
 export enum FieldType {
@@ -32,64 +59,136 @@ export enum FieldType {
     radioGroup,
     slider,
     switch,
-    divider
+    divider,
+    textArea,
+    number
 }
 
-const PresetField: React.FC<PresetFieldProps> = ({original = {}, fieldType, label, id}) => {
+const PresetField: React.FC<PresetFieldProps> = ({required, original = {}, fieldType, label, id, staticOptions}) => {
     switch (fieldType) {
+        case FieldType.textArea:
+            return (
+                <Field name={id} key={id}
+                >{({field, meta: {error, value, initialValue, touched}}: FieldProps) => <TextField
+                    fullWidth
+                    label={label}
+                    variant="outlined"
+                    multiline
+                    margin="normal"
+                    required={required}
+                    error={(touched || value !== initialValue) && Boolean(error)}
+                    helperText={touched || value !== initialValue ? error : ""}
+                    {...field}
+                />}</Field>
+            )
         case FieldType.text:
             return (
-                <Field name={id}>
-                    {({field, meta: {error, value, initialValue, touched}}: FieldProps) => (
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            id={id}
-                            label={label}
-                            type="text"
-                            autoFocus
-                            data-test={`form-${id}`}
-                            error={(touched || value !== initialValue) && Boolean(error)}
-                            helperText={touched || value !== initialValue ? error : ""}
-                            {...original}
-                            {...field}
-                        />
-                    )}
-                </Field>)
+                <Field name={id} key={id}
+                >{({field, meta: {error, value, initialValue, touched}}: FieldProps) => <TextField
+                    fullWidth
+                    label={label}
+                    variant="outlined"
+                    margin="normal"
+                    required={required}
+                    error={(touched || value !== initialValue) && Boolean(error)}
+                    helperText={touched || value !== initialValue ? error : ""}
+                    {...field}
+                />}</Field>
+            )
         case FieldType.checkbox:
-            return (<Field name={id}>{({field}: FieldProps) => (<Checkbox name={id} />)}
+            return (<Field key={id}
+                           name={id}>{({field}: FieldProps) => (<Checkbox name={id} />)}
+            </Field>)
+        case FieldType.radioGroup:
+            return (
+                <Field name={id} key={id}
+                >
+                    {({field, form, meta: {error, value, initialValue, touched}}: FieldProps) => (
+                        <FormControl margin="normal" required={required}
+                                     error={(touched || value !== initialValue) && Boolean(error)}
+                        >
+                            <FormLabel>{label}</FormLabel>
+                            <RadioGroup {...field}>
+                                {staticOptions?.map(({value, label: radioLabel, exclude}) => {
+                                    // const {[exc]} = form.values;
+                                    let disabled = false
+                                    exclude?.forEach(({id, value}) => {
+                                        if (value.includes(form.values[id])) {
+                                            disabled = true
+                                        }
+                                    })
+                                    return <FormControlLabel key={id + value} value={value}
+                                                             control={<Radio disabled={disabled} />}
+                                                             label={radioLabel} />
+                                })}
+                            </RadioGroup>
+                            <FormHelperText>{touched || value !== initialValue ? error : ""}</FormHelperText>
+                        </FormControl>
+                    )}
+                </Field>
+            )
+        case FieldType.number:
+            return (<Field name={id} key={id}>
+                {({field, meta: {error, value, initialValue, touched}}: FieldProps) => <TextField
+                    variant="outlined"
+                    label={label}
+                    type="number"
+                    fullWidth
+                    required={required}
+                    margin="normal"
+                    error={(touched || value !== initialValue) && Boolean(error)}
+                    helperText={touched || value !== initialValue ? error : ""}
+                    {...field}
+                />}
             </Field>)
         default:
             return null
     }
 }
-const PresetForm: React.FC<PresetFormProps> = ({fields, initialValues, validationSchema}) => {
-
+const useStyles = makeStyles({
+    container: {},
+    submitButton: {
+        margin: '20px 10%',
+        width: '80%'
+    }
+});
+const PresetForm: React.FC<PresetFormProps> = ({
+                                                   submitPending,
+                                                   submitText,
+                                                   fields,
+                                                   initialValues,
+                                                   validationSchema,
+                                                   validate
+                                               }) => {
+    const classes = useStyles();
     return (
         <Formik
             initialValues={initialValues}
+            validate={validate}
             validationSchema={validationSchema}
             onSubmit={async (values, {setSubmitting}) => {
-                console.log('-----')
-                console.log('values',values)
                 setSubmitting(true);
+                submitPending(values);
             }}
         >
             {({isValid, isSubmitting}) => (
-                <Form>
-                    {fields.map((filed) => <PresetField {...filed} key={filed.id} />)}
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        data-test="signin-submit"
-                        disabled={!isValid || isSubmitting}
-                    >
-                        submit
-                    </Button>
-                </Form>
+                <Card className={classes.container}>
+                    <Form>
+                        {console.log(isSubmitting)}
+                        {fields.map((filed) => <Container key={filed.id}>
+                            <PresetField {...filed} /></Container>)}
+                        <Button
+                            className={classes.submitButton}
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            data-test="signin-submit"
+                            disabled={!isValid || isSubmitting}
+                        >
+                            {submitText}
+                        </Button>
+                    </Form>
+                </Card>
             )}
         </Formik>
     )

@@ -11,45 +11,50 @@ interface Props {
 }
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        display: "flex",
-    },
     toolbar: {
         paddingRight: 24, // keep right padding when drawer closed
     },
-    appBarSpacer: {
-        minHeight: theme.spacing(13),
-        [theme.breakpoints.up("sm")]: {
-            minHeight: theme.spacing(14),
-        },
+
+    innerContent: {
+        // flexGrow: 1,
+        // minHeight: "77vh",
+        // overflow: "auto",
     },
-    content: {
-        flexGrow: 1,
-        height: "100vh",
-        overflow: "auto",
-    },
-    container: {
-        minHeight: "77vh",
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
+    mainLayout: {
+        // minHeight: "93vh",
+        display: "flex",
+        overflowX: "auto",
+        overflowY: "auto",
+        flexDirection:'column',
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
+        // iPad横屏以上用个大padding
         [theme.breakpoints.up("sm")]: {
             paddingTop: theme.spacing(4),
             padding: theme.spacing(4),
         },
     },
+    topContainer: {
+        // flexGrow: 1,
+        display: "flex",
+        // width:'100%',
+
+    },
+
 }));
 const MainLayout: React.FC<Props> = ({children, authService}) => {
     const classes = useStyles();
+
     return (
         <>
             <NavBar />
-            <Container maxWidth="md" className={classes.container}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
+            <main className={classes.mainLayout}>
+                <Container maxWidth="lg" className={classes.topContainer}>
+                    <Grid container spacing={3} className={classes.innerContent}>
                         {children}
                     </Grid>
-                </Grid>
-            </Container>
+                </Container>
+            </main>
         </>
     )
 }
