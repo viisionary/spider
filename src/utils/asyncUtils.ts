@@ -13,8 +13,7 @@ const httpClient = axios.create({
 httpClient.interceptors.request.use((config: any) => {
     const accessToken = localStorage.getItem('Authorization');
     // @ts-ignore
-    // @ts-ignore
-    config.baseUrl = process.env.NODE_ENV === 'development' ? '/' : 'http://18.217.187.128:3333'
+    config.baseUrl = process.env.NODE_ENV === 'development' ? '/' : window.env.apiUrl
     console.log(config.baseUrl)
     config.timeout = 5000;
     config.headers["Authorization"] = `Bearer ${accessToken}`;
