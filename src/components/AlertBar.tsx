@@ -1,9 +1,9 @@
 import React from "react";
-import { Snackbar } from "@material-ui/core";
-import { Interpreter } from "xstate";
-import { SnackbarContext, SnackbarSchema, SnackbarEvents } from "../machines/snackbarMachine";
-import { useService } from "@xstate/react";
-import { Alert } from "@material-ui/lab";
+import {Snackbar} from "@material-ui/core";
+import {Interpreter} from "xstate";
+import {SnackbarContext, SnackbarEvents, SnackbarSchema} from "../machines/snackbarMachine";
+import {useService} from "@xstate/react";
+import {Alert} from "@material-ui/lab";
 
 interface Props {
   snackbarService: Interpreter<SnackbarContext, SnackbarSchema, SnackbarEvents, any>;

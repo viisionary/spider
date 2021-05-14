@@ -1,5 +1,5 @@
 import React from 'react';
-import {fade, makeStyles, Theme, createStyles} from '@material-ui/core/styles';
+import {createStyles, fade, makeStyles, Theme} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -197,7 +197,8 @@ export default function NavBar() {
                             inputProps={{'aria-label': 'search'}}
                         />
                     </div>
-                    <Button color="inherit" to="/items" component={Link}>items</Button>
+                    <Button color="inherit" to="/lists" component={Link}>抽屉</Button>
+                    <Button color="inherit" to="/lists" component={Link}>items</Button>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
                         <IconButton aria-label="show 17 new notifications" color="inherit">

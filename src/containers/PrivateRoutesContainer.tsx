@@ -4,12 +4,16 @@ import {Interpreter} from 'xstate';
 import {AuthMachineContext, AuthMachineEvents} from '../machines/authMachine';
 import {SnackbarContext, SnackbarEvents, SnackbarSchema} from '../machines/snackbarMachine';
 import PrivateRoute from "../components/PrivateRoute";
-import ItemsContainer from "./ItemsContainer";
-import ItemDetailsContainer from './ItemDetailsContainer';
-import ItemCreateContainer from "./ItemCreateContainer";
+import ListContainer from "./ListContainer";
+import DetailsContainer from './DetailsContainer';
+import CreateContainer from "./CreateContainer";
 import MainLayout from '../components/MainLayout';
-import HomeContainer from './HomeContainer';
+import ArticleContainer from './ArticleContainer';
 import {DataContext, DataEvents} from '../machines/dataMachine';
+import {ARTICLE, IMAGES, MEDIAS, SOCKET} from "../constant/Routes";
+import MediasContainer from "./MediasContainer";
+import Home from "./Home";
+import SocketContainer from "./socket/SocketContainer";
 
 export interface Props {
     isLoggedIn: boolean;
@@ -18,24 +22,35 @@ export interface Props {
     ItemsService: Interpreter<DataContext, any, DataEvents, any>;
 }
 
-const PrivateRoutesContainer: React.FC<Props> = ({isLoggedIn, ItemsService,authService, snackbarService}) => {
+const PrivateRoutesContainer: React.FC<Props> = ({isLoggedIn, ItemsService, authService, snackbarService}) => {
     return <MainLayout authService={authService}>
         <Switch>
             <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/"}>
-                <HomeContainer />
+                <Home/>
             </PrivateRoute>
             <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/(public|contacts|personal)?"}>
             </PrivateRoute>
             <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/user/settings"}>
             </PrivateRoute>
-            <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/items"}>
-                <ItemsContainer ItemsService={ItemsService}/>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/lists"}>
+                <ListContainer ItemsService={ItemsService} />
             </PrivateRoute>
-            <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/item/new"}>
-                <ItemCreateContainer />
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/lists/new"}>
+                <CreateContainer />
             </PrivateRoute>
-            <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/items/:itemId"}>
-                <ItemDetailsContainer/>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={"/lists/:itemId"}>
+                <DetailsContainer />
+            </PrivateRoute>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={IMAGES}>
+            </PrivateRoute>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={ARTICLE}>
+                <ArticleContainer />
+            </PrivateRoute>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={MEDIAS}>
+                <MediasContainer />
+            </PrivateRoute>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={SOCKET}>
+                <SocketContainer />
             </PrivateRoute>
         </Switch>
     </MainLayout>

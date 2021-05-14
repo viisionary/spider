@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import axios from "axios";
 // import {globalShowSnackbar} from "../containers/App";
-
 dotenv.config();
 export const delay = (ms: number, params: any = {}) => new Promise((res): any => {
     setTimeout(() => {
@@ -13,6 +12,10 @@ const httpClient = axios.create({
 });
 httpClient.interceptors.request.use((config: any) => {
     const accessToken = localStorage.getItem('Authorization');
+    // @ts-ignore
+    // @ts-ignore
+    config.baseUrl = process.env.NODE_ENV === 'development' ? '/' : 'http://18.217.187.128:3333'
+    console.log(config.baseUrl)
     config.timeout = 5000;
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;

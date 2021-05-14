@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {CssBaseline, makeStyles} from "@material-ui/core";
 import {authService} from "../machines/authMachine";
-import {useService, useMachine} from "@xstate/react";
+import {useMachine, useService} from "@xstate/react";
 import AlertBar from '../components/AlertBar';
 import {snackbarMachine} from '../machines/snackbarMachine';
-import {Switch, Route, Link, Redirect, useHistory, useLocation,} from "react-router-dom";
+import {Redirect, Route, Switch,} from "react-router-dom";
 import SignInForm from "./SignInForm";
 import bg from '../image/bg.jpg'
 import PrivateRoutesContainer from "./PrivateRoutesContainer";

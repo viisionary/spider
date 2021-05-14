@@ -9,18 +9,20 @@ import createIcon from "../svg/004-magic-wand.svg";
 interface Props {
     ItemsService: Interpreter<DataContext, any, DataEvents, any>;
 }
+
 const actions = [
     {icon: <img src={createIcon} alt="12" width={20} />, name: '发起会议'},
 ];
 
-const ItemsContainer: React.FC<Props> = ({ItemsService}) => {
+const ListContainer: React.FC<Props> = ({ItemsService}) => {
     const [ItemsState, sendItems] = useService(ItemsService);
     useEffect(() => {
         sendItems("FETCH");
     }, [sendItems]);
-    return (<div>
-        <Cards items={ItemsState?.context.results!} />
-        <SpeedDials actions={actions} />
-    </div>)
+    return (
+        <div>
+            <Cards items={ItemsState?.context.results!} />
+            <SpeedDials actions={actions} />
+        </div>)
 }
-export default ItemsContainer;
+export default ListContainer;

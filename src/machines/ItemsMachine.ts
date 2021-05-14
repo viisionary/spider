@@ -1,13 +1,13 @@
-import { isEmpty, omit } from "lodash/fp";
-import { dataMachine } from "./dataMachine";
-import { httpClient } from "../utils/asyncUtils";
+import {isEmpty, omit} from "lodash/fp";
+import {dataMachine} from "./dataMachine";
+import {httpClient} from "../utils/asyncUtils";
 
-const items ='meetings';
+const items ='meeting';
 export const ItemsMachine = dataMachine('items').withConfig({
     services: {
         fetchData: async (ctx, event: any) => {
             const payload = omit("type", event);
-            const resp = await httpClient.get(`http://vue.ruoyi.vip/api/${items}`, {
+            const resp = await httpClient.get(`/mock/api/${items}/list`, {
                 params: !isEmpty(payload) && event.type === "FETCH" ? payload : undefined,
             });
             return resp.data;
@@ -16,7 +16,7 @@ export const ItemsMachine = dataMachine('items').withConfig({
         deleteData: async (ctx, event: any) => {
             const payload = omit("type", event);
             const resp = await httpClient.delete(
-                `/api/${items}/${payload.id}`,
+                `/mock/api/${items}/${payload.id}`,
                 payload
             );
             return resp.data;

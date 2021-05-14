@@ -1,4 +1,4 @@
-import { Machine, assign } from "xstate";
+import {assign, Machine} from "xstate";
 
 export interface SnackbarSchema {
   states: {

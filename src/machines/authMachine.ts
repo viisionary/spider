@@ -1,6 +1,6 @@
 // @ts-ignore
 import dotenv from "dotenv";
-import {Machine, assign, interpret, State} from "xstate";
+import {assign, interpret, Machine, State} from "xstate";
 import {omit} from "lodash/fp";
 import {httpClient} from "../utils/asyncUtils";
 import {history} from "../utils/historyUtils";

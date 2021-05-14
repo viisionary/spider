@@ -1,7 +1,7 @@
-import { isEmpty, omit } from "lodash/fp";
-import { dataMachine } from "./dataMachine";
-import { httpClient } from "../utils/asyncUtils";
-import { first } from "lodash";
+import {isEmpty, omit} from "lodash/fp";
+import {dataMachine} from "./dataMachine";
+import {httpClient} from "../utils/asyncUtils";
+import {first} from "lodash";
 
 const items ='meetings';
 export const ItemDetailsMachine = dataMachine('ItemDetails').withConfig({

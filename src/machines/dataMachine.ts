@@ -1,5 +1,5 @@
-import { Machine, assign } from "xstate";
-import { concat } from "lodash/fp";
+import {assign, Machine} from "xstate";
+import {concat} from "lodash/fp";
 
 export interface DataSchema {
     states: {

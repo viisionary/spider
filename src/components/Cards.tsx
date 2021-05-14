@@ -6,7 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
+import {isEmpty} from 'lodash';
 
 const useStyles = makeStyles({
     root: {
@@ -40,7 +41,7 @@ const Cards: React.FC<Prop> = ({items}) => {
 
     return (
         <Grid container spacing={2}>
-            {items.map(({title, desc, id}) => {
+            {!isEmpty(items) && items.map(({title, desc, id}) => {
                 return <Grid key={id} item>
                     <Card>
                         <CardContent>
@@ -60,7 +61,8 @@ const Cards: React.FC<Prop> = ({items}) => {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button size="small" color="primary" component={Link} to={`/items/${id}`} >Learn More</Button>
+                            <Button size="small" color="primary" component={Link} to={`/items/${id}`}>Learn
+                                More</Button>
                         </CardActions>
                     </Card></Grid>
             })}

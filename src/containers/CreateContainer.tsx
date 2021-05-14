@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container, makeStyles} from "@material-ui/core";
-import {object, string} from "yup";
+import {object} from "yup";
 import {ItemPayload} from "../models/item";
 import PresetForm, {FieldType} from "../components/PresetForm";
 
@@ -56,7 +56,7 @@ const fields = [{
 ];
 
 const useStyles = makeStyles((theme) => ({}));
-const ItemCreateContainer: React.FC<Props> = () => {
+const CreateContainer: React.FC<Props> = () => {
     const initialValues: ItemPayload = {
         name: '',
         time: ''
@@ -74,4 +74,4 @@ const ItemCreateContainer: React.FC<Props> = () => {
             submitPending: ()=>{}}} />
     </Container>)
 }
-export default ItemCreateContainer;
+export default CreateContainer;

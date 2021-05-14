@@ -1,8 +1,10 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Interpreter} from "xstate";
 import {AuthMachineContext, AuthMachineEvents} from "../machines/authMachine";
-import {makeStyles, Container, Grid, useMediaQuery, useTheme} from "@material-ui/core";
+import {Box, Container, Grid, makeStyles} from "@material-ui/core";
 import NavBar from "./NavBar";
+import AsideBar from "./AsideBar";
+import {adminMenu} from "../constant/menuRoute";
 
 interface Props {
     children: React.ReactNode;
@@ -15,17 +17,20 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24, // keep right padding when drawer closed
     },
 
-    innerContent: {
-        // flexGrow: 1,
-        // minHeight: "77vh",
-        // overflow: "auto",
+    outSideLayout:{
+        display: "flex",
+        flexGrow:1,
+        overflowX: "auto",
+        overflowY: "auto",
     },
+
     mainLayout: {
-        // minHeight: "93vh",
+        width:'100%',
+        flexGrow:1,
         display: "flex",
         overflowX: "auto",
         overflowY: "auto",
-        flexDirection:'column',
+        flexDirection: 'column',
         paddingTop: theme.spacing(2),
         paddingBottom: theme.spacing(2),
         // iPad横屏以上用个大padding
@@ -39,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         // width:'100%',
 
+    },    innerContent: {
+        // flexGrow: 1,
+        // minHeight: "77vh",
+        // overflow: "auto",
     },
 
 }));
@@ -48,13 +57,16 @@ const MainLayout: React.FC<Props> = ({children, authService}) => {
     return (
         <>
             <NavBar />
-            <main className={classes.mainLayout}>
-                <Container maxWidth="lg" className={classes.topContainer}>
-                    <Grid container spacing={3} className={classes.innerContent}>
-                        {children}
-                    </Grid>
-                </Container>
-            </main>
+            <Box className={classes.outSideLayout}>
+                <AsideBar config={adminMenu}/>
+                <main className={classes.mainLayout}>
+                    <Container maxWidth="lg" className={classes.topContainer}>
+                        <Grid container spacing={3} className={classes.innerContent}>
+                            {children}
+                        </Grid>
+                    </Container>
+                </main>
+            </Box>
         </>
     )
 }

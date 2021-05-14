@@ -1,19 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Interpreter} from "xstate";
-import {DataContext, DataEvents} from "../machines/dataMachine";
 import {useMachine} from "@xstate/react";
 import {ItemDetailsMachine} from "../machines/ItemDetailsMachine";
-import {
-    Button,
-    ButtonGroup,
-    createStyles,
-    Grid,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-    Typography
-} from "@material-ui/core";
+import {Button, ButtonGroup, createStyles, Grid, List, ListItem, ListItemText, Typography} from "@material-ui/core";
 import {makeStyles, Theme} from "@material-ui/core/styles";
 
 interface Props {
@@ -22,16 +10,8 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            // flexDirection: 'row',
             minWidth: '800px',
-            // overf
             height: '2000px',
-            // paddingRight: theme.spacing(1),
-            // // 比sm大的时候用4，小的时候用1
-            // [theme.breakpoints.up("sm")]: {
-            //     paddingRight: theme.spacing(0),
-            // },
-            // paddingRight: theme.spacing(2),
         },
         paper: {
             height: 140,
@@ -42,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-const ItemDetailsContainer: React.FC<Props> = () => {
+const DetailsContainer: React.FC<Props> = () => {
     const itemId = '1212'
     const [itemDetailState, sendItemDetail] = useMachine(ItemDetailsMachine);
 
@@ -51,17 +31,12 @@ const ItemDetailsContainer: React.FC<Props> = () => {
     useEffect(() => {
         sendItemDetail("FETCH", {itemId});
     }, [sendItemDetail, itemId]);
-    console.log(showParticipants)
 
     return (<>
         {itemDetailState.matches("success") && (
             <Grid container className={classes.root} spacing={2}>
                 <Grid item xs={showParticipants ? 8 : 12}>
-                    <video controls width={'100%'}>
-                        <source src="/flower.webm"
-                                type="video/webm" />
-                        Sorry, your browser doesn't support embedded videos.
-                    </video>
+
                     <ButtonGroup color="primary" size="large" variant="contained"
                                  aria-label="outlined primary button group">
                         <Button>静音</Button>
@@ -94,4 +69,4 @@ const ItemDetailsContainer: React.FC<Props> = () => {
         )}
     </>)
 }
-export default ItemDetailsContainer;
+export default DetailsContainer;

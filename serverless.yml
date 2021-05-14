@@ -1,0 +1,19 @@
+app: spider
+component: website
+name: spider
+inputs:
+  bucketName: my-spider
+  protocol: https
+  src:
+    hook: npm run build
+    dist: ./build
+    envPath: ./
+    index: index.html
+    error: index.html
+  env:
+    apiUrl: http://18.217.187.128:3333
+    API_URL: https://api.com
+  environment: #  环境变量
+    variables: #  环境变量对象
+      TEST: value
+
