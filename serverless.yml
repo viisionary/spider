@@ -1,13 +1,12 @@
-
 org: serverless
 app: spider
 stage: dev
 component: website
 name: spider
+
 inputs:
-  region: ${output:${stage}:${app}:ocr-bucket.region}
   bucketName: spider
-  protocol: http
+  protocol: https
   src:
     src: ./
     hook: npm run build
@@ -15,6 +14,3 @@ inputs:
     envPath: ./
     index: index.html
     error: index.html
-  env:
-    # get api url after below api service deployed.
-    apiUrl: http://18.217.187.128:3333/

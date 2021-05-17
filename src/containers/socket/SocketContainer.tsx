@@ -5,6 +5,7 @@ import {buildSocket} from "./fn";
 import {httpClient} from "../../utils/asyncUtils";
 import Peer from 'peerjs';
 import Stream from "node:stream";
+import {Context} from "vm";
 
 /**
  Created by IntelliJ IDEA.
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 let i: number = 0;
 const SocketContainer: React.FC<Props> = ({}) => {
     const [messages, setMessages] = React.useState<string[]>([]);
-    const [roomId, setRoomId] = React.useState<string>('');
+    const [roomId, setRoomId] = React.useState<string>('123');
     const [message, setMessage] = React.useState('how r u');
     const [myUserId, setUserId] = React.useState('');
 
@@ -59,9 +60,14 @@ const SocketContainer: React.FC<Props> = ({}) => {
     const peer = useRef<any>(null);
 
     useEffect(() => {
+        // @ts-ignore
+        // const canvas:HTMLCanvasElement = document.querySelector('canvas');
+        // const ctx:any = canvas.getContext('2d');
+        // ctx.fillStyle = 'green';
+        // ctx.fillRect(10, 10, 100, 100);
     })
     useEffect(() => {
-        ws.current = buildSocket('http://localhost:3333/socket.io')
+        ws.current = buildSocket('https://api.visionary.top/socket.io')
         ws.current.on("connect", () => {
         });
         ws.current.on("message", (e: string) => {
@@ -96,35 +102,101 @@ const SocketContainer: React.FC<Props> = ({}) => {
             video: true,
             audio: true
         }).then((stream: MediaStream) => {
-            peer.current = new Peer(myUserId);
+            const peerConfig: any = {
+                id: myUserId,
+                config: {
+                    'iceServers': [
+                        {url: 'stun:stun.l.google.com:19302'},
+                        {url: 'stun:stun.voipbuster.com'},
+                        {url: 'stun:stun.voipstunt.com'},
+                        {url: 'stun:stun-eu.3cx.com:3478'},
+                        {url: 'stun:stun.voxgratia.org'},
+                        {url: 'stun:stun.xten.com'},
+                        {
+                            url: 'turn:numb.viagenie.ca',
+                            credential: 'muazkh',
+                            username: 'webrtc@live.com'
+                        },
+                        {
+                            url: 'turn:192.158.29.39:3478?transport=udp',
+                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                            username: '28224511:1379330808'
+                        },
+                        {
+                            url: 'turn:192.158.29.39:3478?transport=tcp',
+                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                            username: '28224511:1379330808'
+                        }
+                    ]
+                } /* Sample servers, please use appropriate ones */
+            }
+            peer.current = new Peer(myUserId, peerConfig);
+            console.log(peer.current)
             ws.current.emit('join-room', roomId, myUserId);
-            peer.current.on('call', (call:any) => {
+            peer.current.on('call', (call: any) => {
+                console.log('when call')
                 call.answer(stream); // Answer the call with an A/V stream.
             });
             // 建自己的
             // @ts-ignore
             const video: HTMLVideoElement = document.getElementById('#webRTC');
-            video.srcObject = stream
+            // const video:HTMLVideoElement = document.createElement('video');
+            video.setAttribute('width', '300')
+            // @ts-ignore
+            // const videoContainer: HTMLElement = document.getElementById('videoContainer');
+            // videoContainer.appendChild(video);
+            const canvas: HTMLCanvasElement = document.querySelector('canvas');
+
+            const ctx: any = canvas.getContext('2d');
+
+            // @ts-ignore
+            const captureStream = canvas.captureStream();
+            const OutPut:any = document.getElementById('#OutPut')
+            OutPut.srcObject = captureStream
+            video.srcObject = stream;
+
+            function update() {
+                ctx.drawImage(video, 0, 0, 256, 256);
+                ctx.fillText('SPIDER VIDEO !', 10, 20,);
+                requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.
+            }
+
             video.addEventListener('loadedmetadata', () => {
                 video.play();
+                requestAnimationFrame(update)
+            })
+            OutPut.addEventListener('loadedmetadata', () => {
+                OutPut.play();
             })
             ws.current.on('user-connected', (userId: string) => {
+                console.log(userId, ' user-connected');
+
                 // @ts-ignore
-                const guestVideo: HTMLVideoElement = document.getElementById('guest')
+                // const guestVideo: HTMLVideoElement = document.getElementById('guest')
+
                 const call = peer.current.call(userId, stream);
                 // @ts-ignore
                 call && call.on('stream', (remoteStream) => {
+                    const guestVideo: HTMLVideoElement = document.createElement('video');
+                    console.log('新用户的流加入了，')
+                    console.log('candidate', peer.current.candidate);
+                    console.log('stream', remoteStream, peer.current)
+                    guestVideo.setAttribute('width', '300')
+                    // @ts-ignore
+                    const videoContainer: HTMLElement = document.getElementById('videoContainer');
+                    console.log('append')
+                    videoContainer.appendChild(guestVideo);
                     guestVideo.srcObject = remoteStream
                     guestVideo.addEventListener('loadedmetadata', () => {
                         guestVideo.play();
                     })
                 });
                 call && call.on('close', () => {
-                    guestVideo.remove()
+                    // guestVideo.remove()
                 })
             })
             ws.current.on('user-disconnected', (userId: string) => {
-                console.log(userId, ' user-connected');
+                console.log(userId, ' user-disconnected');
             })
         });
 
@@ -158,19 +230,19 @@ const SocketContainer: React.FC<Props> = ({}) => {
                 <TextField id="roomId-basic" required value={roomId} onChange={handleRoomIdChange} label="房间号" />
                 <TextField id="userId-basic" required value={myUserId} onChange={handleUserIdChange} label="用户名" />
                 <Button size="small" variant="contained" onClick={handleJoinIn}>加入</Button>
-                <p>{myUserId}</p>
                 <p id="videoContainer">
                     <video controls width={'300'} id="#webRTC">
                         <source src="" type="video/webm" />
                         Sorry, your browser doesn't support embedded videos.
                     </video>
-                    <video controls width={'300'} id="guest">
+                    <canvas width="300" height="300">
+                        An alternative text describing what your canvas displays.
+                    </canvas>
+                    <video controls width={'300'} id="#OutPut">
                         <source src="" type="video/webm" />
                         Sorry, your browser doesn't support embedded videos.
                     </video>
                 </p>
-
-
             </Paper>
         </div>
     </div>

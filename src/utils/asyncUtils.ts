@@ -8,13 +8,12 @@ export const delay = (ms: number, params: any = {}) => new Promise((res): any =>
     }, ms);
 });
 const httpClient = axios.create({
-    withCredentials: true,
+    // withCredentials: true,
+    baseURL: process.env.NODE_ENV === 'development' ? '/' : 'https://api.visionary.top/'
 });
+
 httpClient.interceptors.request.use((config: any) => {
     const accessToken = localStorage.getItem('Authorization');
-    // @ts-ignore
-    config.baseUrl = process.env.NODE_ENV === 'development' ? '/' : window.env.apiUrl
-    console.log(config.baseUrl)
     config.timeout = 5000;
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;
