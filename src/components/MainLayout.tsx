@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useRef} from "react";
 import {Interpreter} from "xstate";
 import {AuthMachineContext, AuthMachineEvents} from "../machines/authMachine";
-import {Box, Container, Grid, makeStyles} from "@material-ui/core";
+import {Box, Breadcrumbs, Container, Grid, IconButton, Link, makeStyles, Typography} from "@material-ui/core";
 import NavBar from "./NavBar";
 import AsideBar from "./AsideBar";
 import {adminMenu} from "../constant/menuRoute";
+import MenuIcon from "@material-ui/icons/Menu";
 
 interface Props {
     children: React.ReactNode;
@@ -17,16 +18,16 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24, // keep right padding when drawer closed
     },
 
-    outSideLayout:{
+    outSideLayout: {
         display: "flex",
-        flexGrow:1,
+        flexGrow: 1,
         overflowX: "auto",
         overflowY: "auto",
     },
 
     mainLayout: {
-        width:'100%',
-        flexGrow:1,
+        width: '100%',
+        flexGrow: 1,
         display: "flex",
         overflowX: "auto",
         overflowY: "auto",
@@ -39,26 +40,24 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(4),
         },
     },
-    topContainer: {
-        // flexGrow: 1,
-        display: "flex",
-        // width:'100%',
-
-    },    innerContent: {
-        // flexGrow: 1,
-        // minHeight: "77vh",
-        // overflow: "auto",
-    },
+    topContainer: {display: "flex"},
+    innerContent: {},
 
 }));
 const MainLayout: React.FC<Props> = ({children, authService}) => {
     const classes = useStyles();
 
+    const asideBar = useRef(null);
+    const handleDrawerToggle = () => {
+        // @ts-ignore
+        asideBar.current.handleDrawerToggle()
+    }
+
     return (
         <>
-            <NavBar />
+            <NavBar onDrawerToggle={handleDrawerToggle} />
             <Box className={classes.outSideLayout}>
-                <AsideBar config={adminMenu}/>
+                <AsideBar config={adminMenu} ref={asideBar} />
                 <main className={classes.mainLayout}>
                     <Container maxWidth="lg" className={classes.topContainer}>
                         <Grid container spacing={3} className={classes.innerContent}>

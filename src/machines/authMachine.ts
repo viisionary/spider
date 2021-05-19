@@ -68,12 +68,12 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
         services: {
             performLogin: async (ctx, event) => {
                 return await httpClient
-                    .post(`/api/login`, event)
+                    .post(`/api/user/login`, event)
                     .then(({data}) => {
                         history.push("/");
-                        return data;
+                        return {user: data};
                     })
-                    .catch(({response:{data:{message}}, status},) => {
+                    .catch(({response: {data: {message}}, status},) => {
                         throw new Error(message);
                     });
             },
@@ -83,12 +83,12 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
             },
             updateProfile: async (ctx, event: any) => {
                 const payload = omit("type", event);
-                const resp = await httpClient.patch(`http://localhost:3001/users/${payload.id}`, payload);
+                const resp = await httpClient.patch(`/api/users/${payload.id}`, payload);
                 return resp.data;
             },
             performLogout: async (ctx, event) => {
                 localStorage.removeItem("authState");
-                return await httpClient.post(`http://localhost:3001/logout`);
+                return await httpClient.patch(`/api/user/logout`);
             },
         },
         actions: {

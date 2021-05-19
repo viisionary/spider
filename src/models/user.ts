@@ -18,6 +18,7 @@ export interface User {
   defaultPrivacyLevel: DefaultPrivacyLevel;
   createdAt: Date;
   modifiedAt: Date;
+    location:string,
 }
 
 export type UserSettingsPayload = Pick<

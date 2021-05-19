@@ -12,9 +12,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import logo from '../svg/logo.svg'
-import {Button} from '@material-ui/core';
+import logo from '../svg/007-hacker.svg'
+import {Button, Grid} from '@material-ui/core';
 import {Link} from "react-router-dom";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,10 +25,17 @@ const useStyles = makeStyles((theme: Theme) =>
             //     minHeight: theme.spacing(8),
             // },
         },
+        appBar: {
+            // backgroundColor:theme.palette.primary
+            // height: '11vh',
+            // [theme.breakpoints.up("sm")]: {
+            //     minHeight: theme.spacing(8),
+            // },
+        },
         grow: {
             flexGrow: 1,
         },
-        menuButton: {
+        logoButton: {
             marginRight: theme.spacing(2),
         },
         title: {
@@ -85,10 +93,19 @@ const useStyles = makeStyles((theme: Theme) =>
                 display: 'none',
             },
         },
+        menuButton: {
+            [theme.breakpoints.up('md')]: {
+                display: 'none',
+            },
+        },
     }),
 );
 
-export default function NavBar() {
+interface Props {
+    onDrawerToggle: () => void;
+}
+
+const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -141,7 +158,7 @@ export default function NavBar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton aria-label="show 4 new mails" color="inherit">
+                <IconButton aria-label="show 4 new mails" color="inherit" component={Link} to={'/messages'}>
                     <Badge badgeContent={4} color="secondary">
                         <MailIcon />
                     </Badge>
@@ -149,19 +166,21 @@ export default function NavBar() {
                 <p>Messages</p>
             </MenuItem>
             <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={11} color="secondary">
+                <IconButton aria-label="show 17 new notifications" color="inherit" component={Link} to={'/notifications'}>
+                    <Badge badgeContent={17} color="secondary">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
                 <p>Notifications</p>
             </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
+            <MenuItem>
                 <IconButton
                     aria-label="account of current user"
                     aria-controls="primary-search-account-menu"
                     aria-haspopup="true"
                     color="inherit"
+                    component={Link}
+                    to="/profile"
                 >
                     <AccountCircle />
                 </IconButton>
@@ -172,13 +191,13 @@ export default function NavBar() {
 
     return (
         <div className={classes.appBarSpacer}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.appBar}>
                 <Toolbar>
                     <IconButton
                         edge="start"
                         component={Link}
                         to="/"
-                        className={classes.menuButton}
+                        className={classes.logoButton}
                         color="inherit"
                         aria-label="open drawer"
                     >
@@ -197,21 +216,33 @@ export default function NavBar() {
                             inputProps={{'aria-label': 'search'}}
                         />
                     </div>
-                    <Button color="inherit" to="/lists" component={Link}>抽屉</Button>
-                    <Button color="inherit" to="/lists" component={Link}>items</Button>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        className={classes.menuButton}
+                        onClick={onDrawerToggle}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Button color="inherit" to="/getting-started" component={Link}>get start</Button>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
+                        <IconButton aria-label="show 4 new mails" color="inherit" component={Link} to={'/messages'}>
+                            <Badge badgeContent={4} color="secondary">
+                                <MailIcon />
+                            </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show 17 new notifications" color="inherit" component={Link} to={'/notifications'}>
                             <Badge badgeContent={17} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
                         <IconButton
                             edge="end"
+                            to="/profile"
+                            component={Link}
                             aria-label="account of current user"
-                            aria-controls={menuId}
                             aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
                             <AccountCircle />
@@ -235,3 +266,5 @@ export default function NavBar() {
         </div>
     );
 }
+
+export default NavBar;

@@ -1,31 +1,43 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import {history} from "./utils/historyUtils";
 import {Router} from 'react-router-dom';
-import {createMuiTheme, ThemeProvider} from '@material-ui/core';
-import {orange} from '@material-ui/core/colors';
+import {createMuiTheme, CssBaseline, ThemeProvider, useMediaQuery} from '@material-ui/core';
+import {lime, orange, green} from '@material-ui/core/colors';
+import {getTheme} from "./styles";
+import {useService} from "@xstate/react";
+import {themeColorService} from "./machines/PreferThemeColorMachine";
 
-const theme = createMuiTheme({
-    palette: {
-        // primary:{
-        //     main: orange[500],
-        // },
-        secondary: {
-            main: orange[500],
-        },
-    },
-});
 /* istanbul ignore next */
 const onRedirectCallback = (appState: any) => {
     history.replace((appState && appState.returnTo) || window.location.pathname);
 };
-ReactDOM.render(
-    <Router history={history}>
+
+function ThemeContext() {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
+    // const [preferThemeColor, setPreferThemeColor] = useState<string>('1');
+    const [themeColor, ] = useService(themeColorService);
+
+    console.log(themeColor)
+    const theme = React.useMemo(
+        () =>
+            getTheme(performance, themeColor),
+        [themeColor,prefersDarkMode],
+    );
+
+    return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <App />
         </ThemeProvider>
+    );
+}
+
+ReactDOM.render(
+    <Router history={history}>
+        <ThemeContext />
     </Router>,
     document.getElementById('root')
 );

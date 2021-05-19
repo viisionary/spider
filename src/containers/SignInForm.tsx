@@ -58,6 +58,7 @@ const SignInForm: React.FC<Props> = ({authService}) => {
         remember: undefined,
     };
     let location = useLocation();
+
     const signInPending = (payload: SignInPayload) => sendAuth({type: "LOGIN", ...payload});
 
     return (

@@ -9,6 +9,8 @@ import SignInForm from "./SignInForm";
 import bg from '../image/bg.jpg'
 import PrivateRoutesContainer from "./PrivateRoutesContainer";
 import {ItemsMachine} from "../machines/ItemsMachine";
+import GettingStarted from "./gettingStarted/GettingStarted.";
+import Home from "./unauthorized/Home.";
 
 const useStyles = makeStyles((theme) => ({
     topRoot: {
@@ -27,6 +29,9 @@ const UnLoggedInRoutes: React.FC = () => {
             <Route exact path="/signin">
                 <SignInForm authService={authService} />
             </Route>
+            <Route exact path="/">
+                <Home />
+            </Route>
             <Route path="/*">
                 <Redirect
                     to={{
@@ -36,6 +41,7 @@ const UnLoggedInRoutes: React.FC = () => {
             </Route>
         </Switch>)
 }
+
 const App: React.FC = () => {
     const classes = useStyles();
     const [authState] = useService(authService);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef, useContext, useImperativeHandle} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
         toolbar: {
             ...theme.mixins.toolbar,
             textAlign: 'center',
+            lineHeight:'64px',
         },
         drawerPaper: {
             width: drawerWidth,
@@ -43,18 +44,20 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function AsideBar({config}: any) {
+
+function AsideBar({config}: any, ref: any) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+    useImperativeHandle(ref, () => ({
+        handleDrawerToggle
+    }));
 
-    const handleClick = () => {
-        setOpen(!open);
-    };
     const drawer = (
         <div>
             <h6 className={classes.toolbar}>
@@ -82,15 +85,6 @@ export default function AsideBar({config}: any) {
     );
     return (
         <div className={classes.drawer}>
-            <IconButton
-                color="primary"
-                aria-label="open drawer"
-                // edge="start"
-                onClick={handleDrawerToggle}
-                className={classes.menuButton}
-            >
-                <MenuIcon />
-            </IconButton>
             <Hidden smUp implementation="css">
                 <Drawer
                     variant="temporary"
@@ -109,9 +103,7 @@ export default function AsideBar({config}: any) {
             </Hidden>
             <Hidden smDown implementation="css">
                 <Drawer
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
+                    classes={{paper: classes.drawerPaper}}
                     variant="permanent"
                     open
                 >
@@ -121,3 +113,5 @@ export default function AsideBar({config}: any) {
         </div>
     );
 }
+
+export default forwardRef(AsideBar)

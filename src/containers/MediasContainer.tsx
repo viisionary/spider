@@ -10,10 +10,7 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         MediasContainer: {
-            // display:'flex',
-            // height: '100vh',
             flex: 1,
-            // background: 'yellow',
             [theme.breakpoints.down('md')]: {
                 background: 'pink'
             },

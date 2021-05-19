@@ -1,6 +1,8 @@
 import React, {useEffect} from "react"
-import {Button} from "@material-ui/core";
+import {Button, Paper} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import {flexColumn} from "../styles";
+import {Link} from "react-router-dom";
 
 /**
  Created by IntelliJ IDEA.
@@ -17,10 +19,9 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         Home: {
-            background: 'yellow',
-            [theme.breakpoints.down('md')]: {
-                background: 'pink'
-            },
+            ...flexColumn,
+            height:'90vh',
+            [theme.breakpoints.down('md')]: {},
         },
 
     }),
@@ -34,11 +35,24 @@ const Home: React.FC<Props> = ({}) => {
     }, []);
     const classes = useStyles();
 
-    return <div className={classes.Home}>
+    return <Paper className={classes.Home}>
         <h1>
-            Home
+            SPIDER
         </h1>
-        <Button variant="contained" onClick={handleToggle}>{open.toString()}</Button>
-    </div>
+        <p>
+            A JavaScript library for building user interfaces
+        </p>
+        <ul>
+            <li>有webRTC的例子，可连接</li>
+            <li>表单 通过静态的配置可直接生成所需表单，包含....</li>
+            <li>现成的分页</li>
+            <li>spider-cli：下载spider-source</li>
+            <li>spider-source：架子的源码</li>
+            <li>spider:只放组见</li>
+        </ul>
+
+        <Button variant="outlined" to="/getting-started" component={Link}>Get Started</Button>
+
+    </Paper>
 }
 export default Home

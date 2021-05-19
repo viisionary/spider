@@ -1,11 +1,22 @@
 import React, {useEffect, useRef} from "react"
-import {AccordionSummary, Button, List, ListItem, Paper, TextField} from "@material-ui/core";
+import {
+    AccordionSummary,
+    Breadcrumbs,
+    Button, Hidden,
+    Link,
+    List,
+    ListItem,
+    Paper,
+    TextField,
+    Typography
+} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {buildSocket} from "./fn";
 import {httpClient} from "../../utils/asyncUtils";
 import Peer from 'peerjs';
 import Stream from "node:stream";
 import {Context} from "vm";
+import {ARTICLE} from "../../constant/Routes";
 
 /**
  Created by IntelliJ IDEA.
@@ -22,25 +33,27 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         SocketContainer: {
-            // background: 'yellow',
             display: 'flex',
             flexDirection: 'column',
             flex: '1',
-            [theme.breakpoints.down('md')]: {
-                background: 'pink'
-            },
+            [theme.breakpoints.down('md')]: {},
         },
         SocketContent: {
             display: 'flex',
             flex: '1',
             justifyContent: 'space-between',
-            flexDirection: 'row',
+            flexDirection: 'column',
         },
         clientContainer: {
             display: 'flex',
             flex: '1',
             flexDirection: 'column',
             padding: "20px 30px",
+            marginBottom: "20px",
+        },
+        breadcrumbs: {
+            fontSize: '20px',
+            padding: '10px 5px'
         }
     }),
 );
@@ -151,7 +164,7 @@ const SocketContainer: React.FC<Props> = ({}) => {
 
             // @ts-ignore
             const captureStream = canvas.captureStream();
-            const OutPut:any = document.getElementById('#OutPut')
+            const OutPut: any = document.getElementById('#OutPut')
             OutPut.srcObject = captureStream
             video.srcObject = stream;
 
@@ -214,8 +227,24 @@ const SocketContainer: React.FC<Props> = ({}) => {
     const handleUserIdChange = ({target: {value}}: any) => {
         setUserId(value)
     }
+
+    function handleClick(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+        event.preventDefault();
+        console.info('You clicked a breadcrumb.');
+    }
+
     return <div className={classes.SocketContainer}>
-        <h1>SocketContainer</h1>
+        <Hidden mdUp>
+            <Breadcrumbs className={classes.breadcrumbs} aria-label="breadcrumb">
+                <Link color="inherit" href={ARTICLE}>
+                    ARTICLE
+                </Link>
+                <Typography color="textPrimary">Socket</Typography>
+            </Breadcrumbs>
+        </Hidden>
+        <Hidden smDown>
+            <Typography color="textPrimary">Socket</Typography>
+        </Hidden>
         <div className={classes.SocketContent}>
             <Paper className={classes.clientContainer}>
                 <h2>send to server</h2>

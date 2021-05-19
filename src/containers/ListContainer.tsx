@@ -5,6 +5,7 @@ import {DataContext, DataEvents} from '../machines/dataMachine';
 import Cards from "../components/Cards";
 import SpeedDials from "../components/SpeedDials";
 import createIcon from "../svg/004-magic-wand.svg";
+import {Pagination} from "@material-ui/lab";
 
 interface Props {
     ItemsService: Interpreter<DataContext, any, DataEvents, any>;
@@ -23,6 +24,7 @@ const ListContainer: React.FC<Props> = ({ItemsService}) => {
         <div>
             <Cards items={ItemsState?.context.results!} />
             <SpeedDials actions={actions} />
+            <Pagination count={10} variant="outlined" color="primary" />
         </div>)
 }
 export default ListContainer;

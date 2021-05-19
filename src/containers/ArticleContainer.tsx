@@ -12,19 +12,11 @@ interface Props {
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        homeContainer: {
-            // padding:'0',
-            // margin:'20px',
-
-            // height:'2000px',
-            // width:'2000px',
+        articleContainer: {
             display: 'flex',
             flexWrap: 'wrap',
-            // flexGrow: 1,
             flexDirection: 'row',
-            // spacing:2,
             justifyContent: 'flex-start',
-            // backgroundColor: theme.palette.background.paper,
         },
         cardContainer: {
             // 适配电脑
@@ -90,7 +82,7 @@ const ArticleContainer: React.FC<Props> = () => {
     },[])
     // deps 没的话 useEffect只走一遍
     return (
-        <Box className={classes.homeContainer}>
+        <Box className={classes.articleContainer}>
             {tileData.map((tile) => (
                 <Card key={Math.random()} className={classes.cardContainer}>
                     <CardMedia

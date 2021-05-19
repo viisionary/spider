@@ -1,6 +1,7 @@
 import MailIcon from "@material-ui/icons/Mail";
 import React from "react";
-import {IMAGES, MEDIAS} from "./Routes";
+import {ARTICLE, IMAGES, MEDIAS} from "./Routes";
+import {BurstMode, Http, PermMedia} from "@material-ui/icons";
 
 const subMenuMusic = [
     {
@@ -20,24 +21,24 @@ export const adminMenu = [
         filter: "9",
         name: "article",
         child: [],
-        path: "/article",
-        title: "article",
-        icon: <MailIcon/>,
-    },    {
+        path: ARTICLE,
+        title: "Article",
+        icon: <MailIcon fontSize="large" />,
+    }, {
         filter: "9",
         name: "medias",
         child: [],
         path: MEDIAS,
-        title: "medias",
-        icon: <MailIcon/>,
+        title: "Medias",
+        icon: <Http fontSize="large" />,
     },
     {
         filter: "9",
         name: "images",
         child: subMenuMusic,
         path: IMAGES,
-        title: "images",
-        icon: <MailIcon/>,
+        title: "Images",
+        icon: <BurstMode fontSize="large" />,
     },
 ];
 
