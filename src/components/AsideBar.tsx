@@ -1,13 +1,12 @@
-import React, {forwardRef, useContext, useImperativeHandle} from 'react';
+import React, {forwardRef, useImperativeHandle} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import {Divider, Drawer, Hidden, IconButton, useTheme} from "@material-ui/core";
+import {Divider, Drawer, Hidden,  useTheme} from "@material-ui/core";
 import MailIcon from "@material-ui/icons/Mail";
-import MenuIcon from '@material-ui/icons/Menu';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>

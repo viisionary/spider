@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         Home: {
             ...flexColumn,
-            height:'90vh',
+            height: '90vh',
             [theme.breakpoints.down('md')]: {},
         },
 

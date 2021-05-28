@@ -10,7 +10,7 @@ import bg from '../image/bg.jpg'
 import PrivateRoutesContainer from "./PrivateRoutesContainer";
 import {ItemsMachine} from "../machines/ItemsMachine";
 import GettingStarted from "./gettingStarted/GettingStarted.";
-import Home from "./unauthorized/Home.";
+import Home from "./unauthorized/Home";
 
 const useStyles = makeStyles((theme) => ({
     topRoot: {

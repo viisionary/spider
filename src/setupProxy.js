@@ -11,6 +11,17 @@ module.exports = function (app) {
 			logLevel: "debug",
 		})
 	)
+	app.use(
+		createProxyMiddleware('/socket.io', {
+			target: `http://localhost:8083`,
+			pathRewrite: {
+				// '^/api': '/', // rewrite path
+			},
+			changeOrigin: true,
+			// logLevel: "debug",
+		})
+	)
+	//socket.io
   // app.use(
   //   createProxyMiddleware('/api', {
   //     target: `https://api.visionary.top/`,

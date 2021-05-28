@@ -80,7 +80,8 @@ const SocketContainer: React.FC<Props> = ({}) => {
         // ctx.fillRect(10, 10, 100, 100);
     })
     useEffect(() => {
-        ws.current = buildSocket('https://api.visionary.top/socket.io')
+        // ws.current = buildSocket('https://api.visionary.top/socket.io')
+        ws.current = buildSocket('/socket.io')
         ws.current.on("connect", () => {
         });
         ws.current.on("message", (e: string) => {
@@ -212,13 +213,8 @@ const SocketContainer: React.FC<Props> = ({}) => {
                 console.log(userId, ' user-disconnected');
             })
         });
-
-        // const peer = new Peer('pick-an-id');
-        // const conn = peer.connect('another-peers-id');
-        // conn.on('open', () => {
-        //     conn.send('hi!');
-        // });
     })
+
     const sendMessage = async () => {
         setMessages(prevArray => [...prevArray, message])
         ws.current.emit('message', message);
