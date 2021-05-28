@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import {history} from "./utils/historyUtils";
 import {Router} from 'react-router-dom';
-import {createMuiTheme, CssBaseline, ThemeProvider, useMediaQuery} from '@material-ui/core';
-import {lime, orange, green} from '@material-ui/core/colors';
+import {CssBaseline, ThemeProvider, useMediaQuery} from '@material-ui/core';
 import {getTheme} from "./styles";
 import {useService} from "@xstate/react";
 import {themeColorService} from "./machines/PreferThemeColorMachine";

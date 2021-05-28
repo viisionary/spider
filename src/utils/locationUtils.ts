@@ -1,5 +1,3 @@
-import {rejects} from "assert";
-
 export function getLocation(): Promise<string> {
     return new Promise((resolve, rejects) => {
         function success(position: any) {

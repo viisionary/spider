@@ -13,7 +13,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import logo from '../svg/007-hacker.svg'
-import {Button, Grid} from '@material-ui/core';
+import {Button} from '@material-ui/core';
 import {Link} from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 

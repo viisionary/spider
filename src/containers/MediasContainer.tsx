@@ -2,7 +2,6 @@ import React, {useEffect} from "react"
 import {Accordion, AccordionDetails, AccordionSummary, Button} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {httpClient} from "../utils/asyncUtils";
 
 interface Props {
 }

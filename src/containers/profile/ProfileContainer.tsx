@@ -1,8 +1,8 @@
 import React, {useEffect} from "react"
-import {Avatar, Backdrop, Button, Card, CircularProgress, Paper} from "@material-ui/core";
+import {Avatar, Backdrop, Button, Paper} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {Interpreter} from "xstate";
-import {AuthMachineContext, AuthMachineEvents, authService} from "../../machines/authMachine";
+import {AuthMachineContext, AuthMachineEvents} from "../../machines/authMachine";
 import {useService} from "@xstate/react";
 import PresetForm from "../../components/PresetForm";
 import {conferenceFields} from "../../constant/conferenceForm";

@@ -1,11 +1,10 @@
 import React, {useRef} from "react";
 import {Interpreter} from "xstate";
 import {AuthMachineContext, AuthMachineEvents} from "../machines/authMachine";
-import {Box, Breadcrumbs, Container, Grid, IconButton, Link, makeStyles, Typography} from "@material-ui/core";
+import {Box, Container, Grid, makeStyles} from "@material-ui/core";
 import NavBar from "./NavBar";
 import AsideBar from "./AsideBar";
 import {adminMenu} from "../constant/menuRoute";
-import MenuIcon from "@material-ui/icons/Menu";
 
 interface Props {
     children: React.ReactNode;

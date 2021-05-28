@@ -1,4 +1,4 @@
-import {createMuiTheme, Paper} from "@material-ui/core";
+import {createMuiTheme} from "@material-ui/core";
 import {CSSProperties} from "react";
 
 export const getTheme = (prefersDarkMode: any, themeColor: any) => {

@@ -1,9 +1,8 @@
-import React, {useContext, useEffect} from "react"
+import React from "react"
 import {Button, Paper} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {flexColumn, flexRow} from "../styles";
-import {interpret} from "xstate";
-import {themeArray, themeColorMachine, themeColorService, themeProps} from "../machines/PreferThemeColorMachine";
+import {themeColorService, themeProps} from "../machines/PreferThemeColorMachine";
 import {useService} from "@xstate/react";
 import _ from "lodash";
 

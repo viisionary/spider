@@ -1,7 +1,7 @@
 import MailIcon from "@material-ui/icons/Mail";
 import React from "react";
 import {ARTICLE, IMAGES, MEDIAS} from "./Routes";
-import {BurstMode, Http, PermMedia} from "@material-ui/icons";
+import {BurstMode, Http} from "@material-ui/icons";
 
 const subMenuMusic = [
     {

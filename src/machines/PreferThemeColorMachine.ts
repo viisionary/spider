@@ -1,5 +1,5 @@
 import {assign, createMachine, interpret} from 'xstate';
-import {green, lime, orange, pink} from "@material-ui/core/colors";
+import {lime, orange, pink} from "@material-ui/core/colors";
 
 interface CustomThemeContext {
     primary: string,

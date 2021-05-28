@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react"
-import {Button, IconButton} from "@material-ui/core";
+import {IconButton} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {flexColumn, flexColumnStretch, flexRow, flexRowBetween, fontFamily} from "../../styles";
+import {flexColumnStretch, flexRow, flexRowBetween, fontFamily} from "../../styles";
 import signinLogo from '../../svg/signin.svg'
 import {Link} from "react-router-dom";
 
