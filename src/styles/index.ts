@@ -5,7 +5,8 @@ export const getTheme = (prefersDarkMode: any, themeColor: any) => {
     // @ts-ignore
     return createMuiTheme({
         palette: {
-            type: prefersDarkMode ? 'dark' : 'light',
+            // type: prefersDarkMode ? 'dark' : 'light',
+            type:'light',
             primary: {
                 main: themeColor.context?.primary,
             },

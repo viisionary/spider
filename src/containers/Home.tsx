@@ -3,6 +3,7 @@ import {Button, Paper} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {flexColumn} from "../styles";
 import {Link} from "react-router-dom";
+import {useSfx} from "../hooks/useSfx";
 
 /**
  Created by IntelliJ IDEA.
@@ -28,8 +29,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 const Home: React.FC<Props> = ({}) => {
     const [open, setOpen] = React.useState(true);
+
     const handleToggle = () => {
         setOpen(!open);
+
     };
     useEffect(() => {
     }, []);

@@ -23,14 +23,14 @@ export const adminMenu = [
         child: [],
         path: ARTICLE,
         title: "Article",
-        icon: <MailIcon fontSize="large" />,
+        icon: <MailIcon />,
     }, {
         filter: "9",
         name: "medias",
         child: [],
         path: MEDIAS,
         title: "Medias",
-        icon: <Http fontSize="large" />,
+        icon: <Http  />,
     },
     {
         filter: "9",
@@ -38,7 +38,7 @@ export const adminMenu = [
         child: subMenuMusic,
         path: IMAGES,
         title: "Images",
-        icon: <BurstMode fontSize="large" />,
+        icon: <BurstMode />,
     },
 ];
 

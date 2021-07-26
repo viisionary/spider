@@ -67,8 +67,7 @@ const SocketContainer: React.FC<Props> = ({}) => {
         // ctx.fillRect(10, 10, 100, 100);
     })
     useEffect(() => {
-        // ws.current = buildSocket('https://api.visionary.top/socket.io')
-        ws.current = buildSocket('/socket.io')
+        ws.current = buildSocket('/api/socket.io')
         ws.current.on("connect", () => {
         });
         ws.current.on("message", (e: string) => {
@@ -142,7 +141,7 @@ const SocketContainer: React.FC<Props> = ({}) => {
             // @ts-ignore
             const video: HTMLVideoElement = document.getElementById('#webRTC');
             // const video:HTMLVideoElement = document.createElement('video');
-            video.setAttribute('width', '300')
+            video.setAttribute('width', '300');
             // @ts-ignore
             // const videoContainer: HTMLElement = document.getElementById('videoContainer');
             // videoContainer.appendChild(video);

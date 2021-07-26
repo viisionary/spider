@@ -1,9 +1,15 @@
-import React, {useEffect, useRef} from "react"
-import {IconButton} from "@material-ui/core";
+import React, {useEffect, useRef, useState} from "react"
+import {Box, Button, CardActions, IconButton, TextField} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {flexColumnStretch, flexRow, flexRowBetween, fontFamily} from "../../styles";
+import {flexColumn, flexColumnStretch, flexRow, flexRowBetween, fontFamily} from "../../styles";
 import signinLogo from '../../svg/signin.svg'
 import {Link} from "react-router-dom";
+import {ARTICLE} from "../../constant/Routes";
+import {tileData} from "../ArticleContainer";
+import InfoIcon from "@material-ui/icons/Info";
+import ArticleCard from "../../components/ArticleCard.";
+import {useSfx} from "../../hooks/useSfx";
+import happyHand from '../../image/HappyHand.png'
 
 /**
  Created by IntelliJ IDEA.
@@ -23,15 +29,16 @@ const useStyles = makeStyles((theme: Theme) =>
         Home: {
             ...flexColumnStretch,
             background: 'white',
+            overflow: 'auto',
             [theme.breakpoints.down('md')]: {},
 
         },
         header: {
             ...flexRow,
             flex: 0,
-
             background: 'black',
             gap: '1.5rem',
+            color: '#fff',
             padding: '1rem 2rem',
             fontWeight: 400,
         },
@@ -43,15 +50,18 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '5rem 5vw',
             background: theme.palette.primary.main,
             minHeight: '398px',
-            fontFamily
+            fontFamily,
+            ...flexColumn,
         },
         bio: {
             padding: '5rem 5vw',
-            borderTop: '1px solid #d4d0e0',
-            borderBottom: '1px solid #d4d0e0',
+
             margin: 0
         },
-        sharesStories: {},
+        sharesStories: {
+            borderTop: '1px solid #d4d0e0',
+            borderBottom: '1px solid #d4d0e0',
+        },
         sharesStoriesH1: {
             textAlign: 'center',
             color: '#78757f'
@@ -61,12 +71,33 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '2rem',
             fontSize: '.875rem',
             color: '#78757f',
+            background: '#fff'
         },
         hello: {
             padding: '5rem 5vw',
             background: theme.palette.secondary.main,
             borderTop: '1px solid #d4d0e0',
             borderBottom: '1px solid #d4d0e0'
+        },
+        visionary: {
+            color: theme.palette.primary.main,
+            background: 'black',
+            fontSize: 100,
+            padding: '0 30px 10px 30px',
+            fontWeight: 800,
+            margin: '0 auto'
+        },
+        frontEnd: {
+            fontSize: 100,
+            fontWeight: 800,
+        },
+        canvas: {
+            position: 'absolute',
+            // width: '100%',
+        },
+        cardContainer: {
+            width: '30%',
+            margin: '1.5%',
         },
         signin: {
             position: 'fixed',
@@ -80,20 +111,32 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }),
 );
+type Issue = {
+    content: string,
+    time: Date
+}
+type Issues = Issue[];
 const Home: React.FC<Props> = ({}) => {
     const [open, setOpen] = React.useState(true);
     const handleToggle = () => {
         setOpen(!open);
     };
     const main = useRef<any>();
+    const {playAirhorn, playClick} = useSfx();
 
     useEffect(() => {
         const ctx = main.current.getContext("2d");
         console.log(ctx)
         // main.current = document.getElementById("main");
         // ctx && ctx.fillText(`visionary`,0 ,0);
+
         ctx.font = "20px " + fontFamily;
-        ctx.fillText("Hello World!", 10, 50);
+        ctx.fillText("Hello World!".toLocaleUpperCase(), 10, 50);
+
+
+        const img = document.createElement('img')
+        img.src = happyHand
+        ctx.drawImage(img, 0, 0)
 
         ctx.font = "60px" + fontFamily;
         const gradient = ctx.createLinearGradient(0, 0, main.current.width, 0);
@@ -101,10 +144,18 @@ const Home: React.FC<Props> = ({}) => {
         gradient.addColorStop(Number("0.5"), "yellow");
         gradient.addColorStop(Number("1.0"), "blue");
         ctx.fillStyle = gradient;
-        ctx.fillText("visionary".toLocaleUpperCase(), 10, 90);
-    }, []);
+    }, [main]);
     const classes = useStyles();
+    const [issues, setIssues] = useState<Issues>([]);
+    const [content, setContent] = useState<string>('');
 
+    const handleComment = (e: any) => {
+        e.preventDefault();
+        playClick();
+        const now = new Date();
+        setIssues(prevArray => [...prevArray, {content, time: now}])
+        setContent('')
+    }
     return <div className={classes.Home}>
         <header className={classes.header}>
             Visionary's Page
@@ -114,18 +165,39 @@ const Home: React.FC<Props> = ({}) => {
         </header>
         <div className={classes.headerAfter} />
         <section className={classes.main}>
-            <canvas ref={main} />
+            <canvas ref={main} className={classes.canvas} />
+            <span className={classes.frontEnd}>frontEnd</span>
+            <span className={classes.visionary}>visionary</span>
+            <p className={classes.bio}>
+                bio
+            </p>
         </section>
-        <p className={classes.bio}>
-            bio
-        </p>
         <div className={classes.sharesStories}>
-            <h1 className={classes.sharesStoriesH1}>shares stories about code (and not-code).</h1>
+            <h1 className={classes.sharesStoriesH1}>
+                shares stories about code (and not-code).
+                <Button component={Link} to={ARTICLE}>more</Button>
+            </h1>
+            <section>
+                {tileData.map((tile) => (
+                    tile.showIndex &&
+										<ArticleCard className={classes.cardContainer} title={tile.title} cover={tile.img} path={tile.path}
+										             key={tile.path} />
+                ))}
+            </section>
         </div>
-        <div className={classes.hello}></div>
+        <div className={classes.hello}>
+            <h1>issues</h1>
+            {issues.map(({content, time}) => (<p key={time.getTime()}>{content}</p>))}
+            <form noValidate autoComplete="on" onSubmit={handleComment}>
+                <TextField value={content} onChange={(e) => setContent(e.target.value)} id="outlined-basic"
+                           label="Outlined" variant="outlined" />
+                <Button type="submit">xiu ~ </Button>
+            </form>
+        </div>
         <footer className={classes.footer}>
-            <span>powered by boops</span>
-            <Link rel="stylesheet" to="https://github.com/vislonery">source code</Link>
+            <span>powered by ''</span>
+
+            <Link rel="stylesheet" to="https://github.com/viisionary">source code</Link>
         </footer>
     </div>
 }

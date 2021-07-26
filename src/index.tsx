@@ -8,6 +8,7 @@ import {CssBaseline, ThemeProvider, useMediaQuery} from '@material-ui/core';
 import {getTheme} from "./styles";
 import {useService} from "@xstate/react";
 import {themeColorService} from "./machines/PreferThemeColorMachine";
+import {SettingsProvider} from "./hooks/useSfx";
 
 /* istanbul ignore next */
 const onRedirectCallback = (appState: any) => {
@@ -17,19 +18,20 @@ const onRedirectCallback = (appState: any) => {
 function ThemeContext() {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
     // const [preferThemeColor, setPreferThemeColor] = useState<string>('1');
-    const [themeColor, ] = useService(themeColorService);
+    const [themeColor,] = useService(themeColorService);
 
-    console.log(themeColor)
     const theme = React.useMemo(
         () =>
             getTheme(performance, themeColor),
-        [themeColor,prefersDarkMode],
+        [themeColor, prefersDarkMode],
     );
 
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <App />
+            <SettingsProvider>
+                <CssBaseline />
+                <App />
+            </SettingsProvider>
         </ThemeProvider>
     );
 }

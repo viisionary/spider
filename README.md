@@ -1,6 +1,3 @@
-# web-framework
-> 一个时下流行的前端架子
+# 【Notes without nonsense】
 
-> 1. react v17.0.2
-> 2. typescript
-> 
+[https://codepen.io/viisionary/pen/MWmWVxw](https://codepen.io/viisionary/pen/MWmWVxw)

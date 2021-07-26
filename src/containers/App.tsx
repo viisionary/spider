@@ -10,6 +10,10 @@ import bg from '../image/bg.jpg'
 import PrivateRoutesContainer from "./PrivateRoutesContainer";
 import {ItemsMachine} from "../machines/ItemsMachine";
 import Home from "./unauthorized/Home";
+import SignUpForm from "./SignUpForm";
+import {ARTICLE, THEME} from "../constant/Routes";
+import ArticleContainer from "./ArticleContainer";
+import ThemeContainer from "./ThemeContainer.";
 
 const useStyles = makeStyles((theme) => ({
     topRoot: {
@@ -28,8 +32,17 @@ const UnLoggedInRoutes: React.FC = () => {
             <Route exact path="/signin">
                 <SignInForm authService={authService} />
             </Route>
+            <Route exact path="/signup">
+                <SignUpForm authService={authService} />
+            </Route>
             <Route exact path="/">
                 <Home />
+            </Route>
+            <Route exact path={ARTICLE}>
+                <ArticleContainer />
+            </Route>
+            <Route  exact path={THEME}>
+                <ThemeContainer />
             </Route>
             <Route path="/*">
                 <Redirect

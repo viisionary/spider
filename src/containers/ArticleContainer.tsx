@@ -6,6 +6,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import formExample from '../image/formExample.png'
 import {MEDIAS, SOCKET} from "../constant/Routes";
 import {httpClient} from "../utils/asyncUtils";
+import ArticleCard from "../components/ArticleCard.";
 
 interface Props {
 }
@@ -57,19 +58,19 @@ const useStyles = makeStyles((theme: Theme) =>
         },
     }),
 );
-const tileData = [
+
+export const tileData = [
     {img: formExample, title: 'Media EXAMPLE & DOC', author: 'visionary', path: MEDIAS},
     {img: formExample, title: 'socket.io EXAMPLE & DOC', author: 'visionary', path: SOCKET},
     {img: formExample, title: '表单 EXAMPLE & DOC', author: 'visionary', path: '/form'},
     {img: formExample, title: '分页列表 EXAMPLE & DOC', author: 'visionary', path: '/listPages'},
     {img: formExample, title: '流式列表 EXAMPLE & DOC', author: 'visionary', path: '/lists'},
     {img: formExample, title: '详情 EXAMPLE & DOC', author: 'visionary', path: ''},
-    {img: formExample, title: '主题切换 EXAMPLE & DOC', author: 'visionary', path: '/theme'},
+    {img: formExample, title: '主题切换 EXAMPLE & DOC', author: 'visionary', path: '/theme', showIndex: true},
     {img: formExample, title: '布局 EXAMPLE & DOC', author: 'visionary', path: '/layout'},
     {img: formExample, title: '样式常量 EXAMPLE & DOC', author: 'visionary', path: ''},
-    {img: formExample, title: 'PLog', author: 'visionary'},
+    {img: formExample, title: 'PLog', author: 'visionary', path: ''},
 ]
-
 
 
 const ArticleContainer: React.FC<Props> = () => {
@@ -79,29 +80,12 @@ const ArticleContainer: React.FC<Props> = () => {
         httpClient('/api/hi').then(res => {
             console.log(res)
         })
-    },[])
+    }, [])
     // deps 没的话 useEffect只走一遍
     return (
         <Box className={classes.articleContainer}>
             {tileData.map((tile) => (
-                <Card key={Math.random()} className={classes.cardContainer}>
-                    <CardMedia
-                        component="img"
-                        alt="Contemplative Reptile"
-                        height="140"
-                        image={tile.img}
-                        title={tile.title}
-                    />
-                    <CardActions>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {tile.title}
-                        </Typography>
-                        <IconButton component={'a'} href={tile.path} aria-label={`info about ${tile.title}`}
-                                    className={classes.icon}>
-                            <InfoIcon />
-                        </IconButton>
-                    </CardActions>
-                </Card>
+                <ArticleCard className={classes.cardContainer} title={tile.title} cover={tile.img} path={tile.path} key={tile.path} />
             ))}
         </Box>
     )

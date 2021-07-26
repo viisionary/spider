@@ -2,9 +2,10 @@ import React from "react";
 import {Interpreter} from "xstate";
 import {useService} from "@xstate/react";
 import {useLocation} from "react-router-dom";
-import {Button, Container, CssBaseline, makeStyles, TextField,} from "@material-ui/core";
+import {Button, Container, CssBaseline, Grid,  makeStyles, TextField,} from "@material-ui/core";
 import {Field, FieldProps, Form, Formik} from "formik";
 import {object, string} from "yup";
+import { Link } from "react-router-dom";
 
 // import RWALogo from "./SvgRwaLogo";
 // import Footer from "./Footer";
@@ -125,6 +126,11 @@ const SignInForm: React.FC<Props> = ({authService}) => {
                             >
                                 Sign In
                             </Button>
+                            <Grid item>
+                                <Link data-test="signup" to="/signup">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
                         </Form>
                     )}
                 </Formik>

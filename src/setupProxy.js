@@ -1,9 +1,10 @@
 const createProxyMiddleware = require("http-proxy-middleware");
-
+// export const serverAddress ='http://localhost:8083',
+const { serverAddress } = require('./constant/serverAddress');
 module.exports = function (app) {
 	app.use(
-		createProxyMiddleware('/api', {
-			target: `http://localhost:8083`,
+		createProxyMiddleware('/api|/socket.io', {
+			target: serverAddress,
 			pathRewrite: {
 				// '^/api': '/', // rewrite path
 			},
@@ -11,35 +12,4 @@ module.exports = function (app) {
 			logLevel: "debug",
 		})
 	)
-	app.use(
-		createProxyMiddleware('/socket.io', {
-			target: `http://localhost:8083`,
-			pathRewrite: {
-				// '^/api': '/', // rewrite path
-			},
-			changeOrigin: true,
-			// logLevel: "debug",
-		})
-	)
-	//socket.io
-  // app.use(
-  //   createProxyMiddleware('/api', {
-  //     target: `https://api.visionary.top/`,
-	//     pathRewrite: {
-	// 	    // '^/api': '/', // rewrite path
-	//     },
-  //     changeOrigin: true,
-  //     logLevel: "debug",
-  //   })
-  // );
-	// app.use(
-	// 	createProxyMiddleware('/mock/api', {
-	// 		target: `http://10.1.29.252:3000/mock/140/`,
-	// 		pathRewrite: {
-	// 			'^/mock/api': '/', // rewrite path
-	// 		},
-	// 		changeOrigin: true,
-	// 		logLevel: "debug",
-	// 	})
-	// );
 };
