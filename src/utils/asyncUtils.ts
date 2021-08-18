@@ -9,7 +9,7 @@ export const delay = (ms: number, params: any = {}) => new Promise((res): any =>
 });
 const httpClient = axios.create({
     // withCredentials: true,
-    baseURL: process.env.NODE_ENV === 'development' ? '/' : 'https://api.visionary.top/'
+    baseURL: process.env.NODE_ENV === 'development' ? '/' : 'https://spider-api-visionary.herokuapp.com/'
 });
 
 httpClient.interceptors.request.use((config: any) => {

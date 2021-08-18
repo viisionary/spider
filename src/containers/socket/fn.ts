@@ -1,7 +1,12 @@
+import {serverAddress} from "../../constant/serverAddress";
+
 const Client = require("socket.io-client");
 
-export const buildSocket =  (address:string) => {
-    //
+console.log(serverAddress)
 
-    return new Client(address)
+export const buildSocket = () => {
+    //
+    return new Client(`${serverAddress === '/' ? 'http://localhost:8083/' : serverAddress}api/socket.io`);
+
+    // return new Client(address)
 }

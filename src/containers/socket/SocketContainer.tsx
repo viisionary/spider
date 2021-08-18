@@ -67,7 +67,7 @@ const SocketContainer: React.FC<Props> = ({}) => {
         // ctx.fillRect(10, 10, 100, 100);
     })
     useEffect(() => {
-        ws.current = buildSocket('/api/socket.io')
+        ws.current = buildSocket()
         ws.current.on("connect", () => {
         });
         ws.current.on("message", (e: string) => {
