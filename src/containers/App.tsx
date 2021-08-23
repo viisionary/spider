@@ -18,6 +18,7 @@ import ThemeContainer from "./ThemeContainer.";
 const useStyles = makeStyles((theme) => ({
     topRoot: {
         background: `url(${bg}) center`,
+        backgroundSize: 'cover',
         display: "flex",
         flexGrow: 1,
         height: "100vh",
@@ -41,7 +42,7 @@ const UnLoggedInRoutes: React.FC = () => {
             <Route exact path={ARTICLE}>
                 <ArticleContainer />
             </Route>
-            <Route  exact path={THEME}>
+            <Route exact path={THEME}>
                 <ThemeContainer />
             </Route>
             <Route path="/*">

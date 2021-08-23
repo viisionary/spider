@@ -1,10 +1,8 @@
 import React, {useEffect} from 'react';
-import {Box, Card, CardActions, CardMedia, createStyles, Typography, useTheme} from "@material-ui/core";
+import {Box, createStyles, useTheme} from "@material-ui/core";
 import {makeStyles, Theme} from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from '@material-ui/icons/Info';
 import formExample from '../image/formExample.png'
-import {MEDIAS, SOCKET} from "../constant/Routes";
+import {MEDIAS, RESUMABLE_CLIENT, SOCKET} from "../constant/Routes";
 import {httpClient} from "../utils/asyncUtils";
 import ArticleCard from "../components/ArticleCard.";
 
@@ -70,6 +68,7 @@ export const tileData = [
     {img: formExample, title: '布局 EXAMPLE & DOC', author: 'visionary', path: '/layout'},
     {img: formExample, title: '样式常量 EXAMPLE & DOC', author: 'visionary', path: ''},
     {img: formExample, title: 'PLog', author: 'visionary', path: ''},
+    {img: formExample, title: '断点续传', author: 'visionary', path: RESUMABLE_CLIENT},
 ]
 
 

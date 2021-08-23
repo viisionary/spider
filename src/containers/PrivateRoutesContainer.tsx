@@ -10,7 +10,17 @@ import CreateContainer from "./CreateContainer";
 import MainLayout from '../components/MainLayout';
 import ArticleContainer from './ArticleContainer';
 import {DataContext, DataEvents} from '../machines/dataMachine';
-import {ARTICLE, IMAGES, MEDIAS, MESSAGES, NOTIFICATIONS, PROFILE, SOCKET, THEME} from "../constant/Routes";
+import {
+    ARTICLE,
+    IMAGES,
+    MEDIAS,
+    MESSAGES,
+    NOTIFICATIONS,
+    PROFILE,
+    RESUMABLE_CLIENT,
+    SOCKET,
+    THEME
+} from "../constant/Routes";
 import MediasContainer from "./MediasContainer";
 import Home from "./Home";
 import SocketContainer from "./socket/SocketContainer";
@@ -18,6 +28,7 @@ import ProfileContainer from "./profile/ProfileContainer";
 import NotificationsContainer from "./notifications/NotificationsContainer";
 import ThemeContainer from "./ThemeContainer.";
 import MessagesContainer from "./messages/MessagesContainer.";
+import {ResumableClientContainer} from "./resumableClient/ResumableClientContainer";
 
 export interface Props {
     isLoggedIn: boolean;
@@ -54,7 +65,10 @@ const PrivateRoutesContainer: React.FC<Props> = ({isLoggedIn, ItemsService, auth
                 <MediasContainer />
             </PrivateRoute>
             <PrivateRoute isLoggedIn={isLoggedIn} exact path={SOCKET}>
-                <SocketContainer />
+                <SocketContainer  authService={authService} />
+            </PrivateRoute>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={RESUMABLE_CLIENT}>
+                <ResumableClientContainer />
             </PrivateRoute>
             <PrivateRoute isLoggedIn={isLoggedIn} exact path={PROFILE}>
                 <ProfileContainer authService={authService} />

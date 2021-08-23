@@ -1,9 +1,14 @@
 import React, {useEffect, useRef} from "react"
-import {Breadcrumbs, Button, Hidden, Link, List, ListItem, Paper, TextField, Typography} from "@material-ui/core";
+import {Box, Breadcrumbs, Button, Hidden, Link, List, ListItem, Paper, TextField, Typography} from "@material-ui/core";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {buildSocket} from "./fn";
+import {buildSocket, newVideo, removeVideo} from "./fn";
 import Peer from 'peerjs';
 import {ARTICLE} from "../../constant/Routes";
+import ReactDOM from "react-dom";
+import {iceServers} from "../../constant/iceServers";
+import {Interpreter} from "xstate";
+import {AuthMachineContext, AuthMachineEvents} from "../../machines/authMachine";
+import {useService} from "@xstate/react";
 
 /**
  Created by IntelliJ IDEA.
@@ -15,6 +20,7 @@ import {ARTICLE} from "../../constant/Routes";
  **/
 
 interface Props {
+    authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -45,13 +51,21 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 let i: number = 0;
-const SocketContainer: React.FC<Props> = ({}) => {
+const SocketContainer: React.FC<Props> = ({authService}) => {
     const [messages, setMessages] = React.useState<string[]>([]);
+    const [beforeUserVideos, setBeforeUserVideos] = React.useState<{ GuestVideo: any, userId: string }[]>([]);
+
+    const [userVideos, setUserVideos] = React.useState<{ GuestVideo: any, userId: string }[]>([]);
+
     const [roomId, setRoomId] = React.useState<string>('123');
     const [message, setMessage] = React.useState('how r u');
-    const [myUserId, setUserId] = React.useState('');
+
+    const [authStates] = useService(authService)
+    console.log(authStates)
+    const [myUserId, setUserId] = React.useState(authStates.context?.user?.id || '')
 
     const classes = useStyles();
+
 
     //useRef 返回的对象将在组件的整个生命周期内保持不变。
     const ws = useRef<any>(null);
@@ -104,99 +118,93 @@ const SocketContainer: React.FC<Props> = ({}) => {
         }).then((stream: MediaStream) => {
             const peerConfig: any = {
                 id: myUserId,
-                config: {
-                    'iceServers': [
-                        {url: 'stun:stun.l.google.com:19302'},
-                        {url: 'stun:stun.voipbuster.com'},
-                        {url: 'stun:stun.voipstunt.com'},
-                        {url: 'stun:stun-eu.3cx.com:3478'},
-                        {url: 'stun:stun.voxgratia.org'},
-                        {url: 'stun:stun.xten.com'},
-                        {
-                            url: 'turn:numb.viagenie.ca',
-                            credential: 'muazkh',
-                            username: 'webrtc@live.com'
-                        },
-                        {
-                            url: 'turn:192.158.29.39:3478?transport=udp',
-                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                            username: '28224511:1379330808'
-                        },
-                        {
-                            url: 'turn:192.158.29.39:3478?transport=tcp',
-                            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                            username: '28224511:1379330808'
-                        }
-                    ]
-                } /* Sample servers, please use appropriate ones */
+                config: {iceServers} /* Sample servers, please use appropriate ones */
             }
             peer.current = new Peer(myUserId, peerConfig);
-            console.log(peer.current)
+
             ws.current.emit('join-room', roomId, myUserId);
-            peer.current.on('call', (call: any) => {
-                console.log('when call')
-                call.answer(stream); // Answer the call with an A/V stream.
+
+            peer.current.on('call', (call: any,) => {
+                call.answer(stream);
+                call.on('stream', function (remoteStream: any) {
+                    console.log('newVideo')
+                    newVideo({
+                        remoteStream,
+                        containerId: 'beforeUsers',
+                        userId: call.peer
+                    })
+                });
+                call.on('close', () => {
+                    console.log('close')
+                    removeVideo({
+                        containerId: 'beforeUsers',
+                        userId: call.peer
+                    })
+                })
             });
             // 建自己的
             // @ts-ignore
             const video: HTMLVideoElement = document.getElementById('#webRTC');
-            // const video:HTMLVideoElement = document.createElement('video');
             video.setAttribute('width', '300');
-            // @ts-ignore
-            // const videoContainer: HTMLElement = document.getElementById('videoContainer');
-            // videoContainer.appendChild(video);
-            const canvas: HTMLCanvasElement = document.querySelector('canvas');
-
-            const ctx: any = canvas.getContext('2d');
-
-            // @ts-ignore
-            const captureStream = canvas.captureStream();
-            const OutPut: any = document.getElementById('#OutPut')
-            OutPut.srcObject = captureStream
             video.srcObject = stream;
 
-            function update() {
-                ctx.drawImage(video, 0, 0, 256, 256);
-                ctx.fillText('SPIDER VIDEO !', 10, 20,);
-                requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.
-            }
+            (function () {
+                // const canvas: HTMLCanvasElement = document.querySelector('canvas');
+                //
+                // const ctx: any = canvas.getContext('2d');
+                //
+                // // @ts-ignore
+                // const captureStream = canvas.captureStream();
+                // const OutPut: any = document.getElementById('#OutPut')
+                // OutPut.srcObject = captureStream
+                //
+                // function update() {
+                //     ctx.drawImage(video, 0, 0, 256, 256);
+                //     ctx.fillText('SPIDER VIDEO !', 10, 20,);
+                //     requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.
+                // }
 
-            video.addEventListener('loadedmetadata', () => {
-                video.play();
-                requestAnimationFrame(update)
-            })
-            OutPut.addEventListener('loadedmetadata', () => {
-                OutPut.play();
+                // video.addEventListener('loadedmetadata', () => {
+                //     video.play();
+                //     requestAnimationFrame(update)
+                // })
+                // OutPut.addEventListener('loadedmetadata', () => {
+                //     OutPut.play();
+                // })
+            }())
+
+
+            ws.current.on('user-list', (list: any) => {
+                setBeforeUserVideos(list)
             })
             ws.current.on('user-connected', (userId: string) => {
                 console.log(userId, ' user-connected');
-
-                // @ts-ignore
-                // const guestVideo: HTMLVideoElement = document.getElementById('guest')
-
+                setUserVideos((pre) => [...pre, {GuestVideo: "", userId}])
+                // 主动去取
                 const call = peer.current.call(userId, stream);
+                console.log(call)
                 // @ts-ignore
                 call && call.on('stream', (remoteStream) => {
-                    const guestVideo: HTMLVideoElement = document.createElement('video');
-                    console.log('新用户的流加入了，')
-                    console.log('candidate', peer.current.candidate);
-                    console.log('stream', remoteStream, peer.current)
-                    guestVideo.setAttribute('width', '300')
-                    // @ts-ignore
-                    const videoContainer: HTMLElement = document.getElementById('videoContainer');
-                    console.log('append')
-                    videoContainer.appendChild(guestVideo);
-                    guestVideo.srcObject = remoteStream
-                    guestVideo.addEventListener('loadedmetadata', () => {
-                        guestVideo.play();
+                    //TODO TYPE
+                    console.log('newVideo...')
+                    newVideo({
+                        remoteStream,
+                        containerId: 'otherUsers',
+                        userId: call.peer
                     })
                 });
                 call && call.on('close', () => {
-                    // guestVideo.remove()
+                    removeVideo({
+                        containerId: 'otherUsers', userId: call.peer
+                    })
                 })
             })
             ws.current.on('user-disconnected', (userId: string) => {
                 console.log(userId, ' user-disconnected');
+                removeVideo({
+                    containerId: 'beforeUsers',
+                    userId,
+                })
             })
         });
     })
@@ -215,6 +223,9 @@ const SocketContainer: React.FC<Props> = ({}) => {
         console.info('You clicked a breadcrumb.');
     }
 
+    const handleLeave = () => {
+        ws.current.emit('leave-room', roomId, myUserId);
+    }
     return <div className={classes.SocketContainer}>
         <Hidden mdUp>
             <Breadcrumbs className={classes.breadcrumbs} aria-label="breadcrumb">
@@ -229,7 +240,7 @@ const SocketContainer: React.FC<Props> = ({}) => {
         </Hidden>
         <div className={classes.SocketContent}>
             <Paper className={classes.clientContainer}>
-                <h2>send to server</h2>
+                <h2>Check socket.io connection</h2>
                 <List>
                     {messages.map((message) => (<ListItem key={message}>{message}</ListItem>))}
                 </List>
@@ -237,23 +248,52 @@ const SocketContainer: React.FC<Props> = ({}) => {
                 <Button size="small" variant="contained" onClick={sendMessage}>send</Button>
             </Paper>
             <Paper className={classes.clientContainer} id="clientCon">
-                <h2>send to another client</h2>
-                <TextField id="roomId-basic" required value={roomId} onChange={handleRoomIdChange} label="房间号" />
-                <TextField id="userId-basic" required value={myUserId} onChange={handleUserIdChange} label="用户名" />
-                <Button size="small" variant="contained" onClick={handleJoinIn}>加入</Button>
-                <p id="videoContainer">
-                    <video controls width={'300'} id="#webRTC">
-                        <source src="" type="video/webm" />
-                        Sorry, your browser doesn't support embedded videos.
-                    </video>
-                    <canvas width="300" height="300">
-                        An alternative text describing what your canvas displays.
-                    </canvas>
-                    <video controls width={'300'} id="#OutPut">
-                        <source src="" type="video/webm" />
-                        Sorry, your browser doesn't support embedded videos.
-                    </video>
-                </p>
+                <h2>Start Live</h2>
+                <Box display="flex" flexDirection="row">
+                    <TextField id="roomId-basic" required value={roomId} onChange={handleRoomIdChange} label="房间号" />
+                    <TextField disabled id="userId-basic" required value={myUserId} onChange={handleUserIdChange}
+                               label="用户ID" />
+                    <Button size="small" variant="contained" onClick={handleJoinIn}>加入</Button>
+                    <Button size="small" variant="contained" onClick={handleLeave}>离开</Button>
+                </Box>
+
+                <Box id="videoContainer" display="flex" flexDirection="row">
+                    <Box flex={1}>
+                        <h5>从设备取得画面</h5>
+                        <video controls width={'300'} id="#webRTC">
+                            <source src="" type="video/webm" />
+                            Sorry, your browser doesn't support embedded videos.
+                        </video>
+                    </Box>
+                    <Box flex={1}>
+                        <h5>从#webRTC捕获的画面</h5>
+                        <canvas width="300" height="300">
+                            An alternative text describing what your canvas displays.
+                        </canvas>
+                    </Box>
+                    <Box flex={1}>
+                        <h5>从canvas写入的流</h5>
+                        <video controls width={'300'} id="#OutPut">
+                            <source src="" type="video/webm" />
+                            Sorry, your browser doesn't support embedded videos.
+                        </video>
+                    </Box>
+                </Box>
+
+                <Box display="flex" flexDirection="row">
+                    <Box id="otherUsers" flex={1}>
+                        <h5>room中其他用户</h5>
+                        {userVideos.map(({GuestVideo, userId}) => (
+                            <Box id="guestVideos">
+                                <h6>{userId}</h6>
+                            </Box>
+                        ))}
+                    </Box>
+                    <Box flex={1} id="beforeUsers">
+                        <h5>room中之前用户</h5>
+                        {beforeUserVideos.map(item => <h6>{item}</h6>)}
+                    </Box>
+                </Box>
             </Paper>
         </div>
     </div>

@@ -3,11 +3,8 @@ const createProxyMiddleware = require("http-proxy-middleware");
 const { serverAddress } = require('./constant/serverAddress');
 module.exports = function (app) {
 	app.use(
-		createProxyMiddleware('/api|/socket.io', {
+		createProxyMiddleware('/api', {
 			target: serverAddress,
-			pathRewrite: {
-				// '^/api': '/', // rewrite path
-			},
 			changeOrigin: true,
 			logLevel: "debug",
 		})

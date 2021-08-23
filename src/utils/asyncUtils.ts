@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import axios from "axios";
+import { serverAddress } from "../constant/serverAddress";
 // import {globalShowSnackbar} from "../containers/App";
 dotenv.config();
 export const delay = (ms: number, params: any = {}) => new Promise((res): any => {
@@ -8,8 +9,7 @@ export const delay = (ms: number, params: any = {}) => new Promise((res): any =>
     }, ms);
 });
 const httpClient = axios.create({
-    // withCredentials: true,
-    baseURL: process.env.NODE_ENV === 'development' ? '/' : 'https://spider-api-visionary.herokuapp.com/'
+    baseURL: process.env.NODE_ENV === 'development' ? '' : serverAddress
 });
 
 httpClient.interceptors.request.use((config: any) => {
