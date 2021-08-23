@@ -4,4 +4,4 @@ const local = 'http://localhost:8083/';
 const lan ='http://192.168.3.131:3000/';
 const server = 'https://spider-api-visionary.herokuapp.com/'
 const dnsServer = 'https://spider-api.visionary.top/'
-module.exports = { serverAddress: server }
+module.exports = { serverAddress: server,local }
