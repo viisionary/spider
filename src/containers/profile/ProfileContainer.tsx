@@ -88,8 +88,8 @@ const ProfileContainer: React.FC<Props> = ({authService}) => {
             <div>{authState.context?.user?.location || currentLocation}</div>
         </p>
         <div>
+            <Button variant="outlined" onClick={handleLogOut}>退出登录</Button>
         </div>
-        <Button variant="outlined" onClick={handleLogOut}>退出登录</Button>
         <Backdrop className={classes.backdrop} open={open} onClick={handleCloseProfileEditor}>
             <PresetForm fields={conferenceFields} validate={() => {
             }} initialValues={{}} submitPending={handleEdit} submitText="submit" validationSchema={{}} />

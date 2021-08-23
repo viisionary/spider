@@ -77,6 +77,17 @@ export const authMachine = Machine<AuthMachineContext, AuthMachineSchema, AuthMa
                         throw new Error(message);
                     });
             },
+            performSignUp: async (ctx, event) => {
+                return await httpClient
+                    .post(`/api/user/login`, event)
+                    .then(({data}) => {
+                        history.push("/");
+                        return {user: data};
+                    })
+                    .catch(({response: {data: {message}}, status},) => {
+                        throw new Error(message);
+                    });
+            },
             getUserProfile: async (ctx, event) => {
                 const resp = await httpClient.get(`http://localhost:3001/checkAuth`);
                 return resp.data;

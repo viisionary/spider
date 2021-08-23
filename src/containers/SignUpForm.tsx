@@ -90,7 +90,7 @@ const SignUpForm: React.FC<Props> = ({ authService }) => {
         >
           {({ isValid, isSubmitting, dirty }) => (
             <Form className={classes.form}>
-                <Field name="username">
+                <Field name="passcode">
                     {({field, meta: {error, value, initialValue, touched}}: FieldProps) => (
                         <TextField
                             variant="outlined"

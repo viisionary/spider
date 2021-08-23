@@ -62,8 +62,11 @@ const SocketContainer: React.FC<Props> = ({authService}) => {
 
     const [authStates] = useService(authService)
     console.log(authStates)
-    const [myUserId, setUserId] = React.useState(authStates.context?.user?.id || '')
+    const id = authStates.context?.user?.id.replace('-', '');
+    console.log(id)
+    const [myUserId, setUserId] = React.useState(authStates.context?.user?.id.replaceAll('-', '') || '')
 
+    console.log(myUserId);
     const classes = useStyles();
 
 
@@ -284,14 +287,14 @@ const SocketContainer: React.FC<Props> = ({authService}) => {
                     <Box id="otherUsers" flex={1}>
                         <h5>room中其他用户</h5>
                         {userVideos.map(({GuestVideo, userId}) => (
-                            <Box id="guestVideos">
+                            <Box key={userId} id="guestVideos">
                                 <h6>{userId}</h6>
                             </Box>
                         ))}
                     </Box>
                     <Box flex={1} id="beforeUsers">
                         <h5>room中之前用户</h5>
-                        {beforeUserVideos.map(item => <h6>{item}</h6>)}
+                        {beforeUserVideos.map(item => <h6 key={item.userId}>{item}</h6>)}
                     </Box>
                 </Box>
             </Paper>
