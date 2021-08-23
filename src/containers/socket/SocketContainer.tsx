@@ -254,7 +254,7 @@ const SocketContainer: React.FC<Props> = ({authService}) => {
                 <h2>Start Live</h2>
                 <Box display="flex" flexDirection="row">
                     <TextField id="roomId-basic" required value={roomId} onChange={handleRoomIdChange} label="房间号" />
-                    <TextField disabled id="userId-basic" required value={myUserId} onChange={handleUserIdChange}
+                    <TextField id="userId-basic" required value={myUserId} onChange={handleUserIdChange}
                                label="用户ID" />
                     <Button size="small" variant="contained" onClick={handleJoinIn}>加入</Button>
                     <Button size="small" variant="contained" onClick={handleLeave}>离开</Button>
