@@ -1,9 +1,9 @@
 import React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import SpeedDial, {SpeedDialProps} from '@material-ui/lab/SpeedDial';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import SpeedDial, { SpeedDialProps } from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import {useHistory} from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,22 +30,21 @@ const useStyles = makeStyles((theme: Theme) =>
                 left: theme.spacing(2),
             },
         },
-    }),
+    })
 );
 
-
 export interface SpeedDialsActionType {
-    name: string,
-    icon: JSX.Element
+    name: string;
+    icon: JSX.Element;
 }
 
 interface Props {
-    actions: SpeedDialsActionType[]
+    actions: SpeedDialsActionType[];
 }
 
-const SpeedDials: React.FC<Props> = ({actions}) => {
+const SpeedDials: React.FC<Props> = ({ actions }) => {
     const classes = useStyles();
-    const [direction,] = React.useState<SpeedDialProps['direction']>('up');
+    const [direction] = React.useState<SpeedDialProps['direction']>('up');
     const [open, setOpen] = React.useState(false);
     const [hidden] = React.useState(false);
 
@@ -60,9 +59,9 @@ const SpeedDials: React.FC<Props> = ({actions}) => {
     const history = useHistory();
 
     const handleTo = (callback: Function) => () => {
-        history.push('/item/new')
+        history.push('/item/new');
         callback();
-    }
+    };
     return (
         <SpeedDial
             ariaLabel="SpeedDial example"
@@ -85,5 +84,5 @@ const SpeedDials: React.FC<Props> = ({actions}) => {
             ))}
         </SpeedDial>
     );
-}
-export default SpeedDials
+};
+export default SpeedDials;

@@ -1,33 +1,40 @@
-import React from "react";
-import {Interpreter} from "xstate";
-import {useService} from "@xstate/react";
-import {useLocation} from "react-router-dom";
-import {Button, Container, CssBaseline, Grid,  makeStyles, TextField,} from "@material-ui/core";
-import {Field, FieldProps, Form, Formik} from "formik";
-import {object, string} from "yup";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Interpreter } from 'xstate';
+import { useService } from '@xstate/react';
+import { useLocation } from 'react-router-dom';
+import {
+    Button,
+    Container,
+    CssBaseline,
+    Grid,
+    makeStyles,
+    TextField,
+} from '@material-ui/core';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import { object, string } from 'yup';
+import { Link } from 'react-router-dom';
 
 // import RWALogo from "./SvgRwaLogo";
 // import Footer from "./Footer";
-import {SignInPayload} from "../models";
-import {AuthMachineContext, AuthMachineEvents} from "../machines/authMachine";
-import {Alert} from "@material-ui/lab";
+import { SignInPayload } from '../models';
+import { AuthMachineContext, AuthMachineEvents } from '../machines/authMachine';
+import { Alert } from '@material-ui/lab';
 
-import logo from '../svg/logo.svg'
+import logo from '../svg/logo.svg';
 
 const validationSchema = object({
-    username: string().required("Username is required"),
+    username: string().required('Username is required'),
     password: string()
-        .min(4, "Password must contain at least 4 characters")
-        .required("Enter your password"),
+        .min(4, 'Password must contain at least 4 characters')
+        .required('Enter your password'),
 });
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         // backgroundImage:bg
     },
     logo: {
@@ -35,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         width: '60px',
     },
     form: {
-        width: "100%", // Fix IE 11 issue.
+        width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
     },
     submit: {
@@ -50,24 +57,29 @@ export interface Props {
     authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
 }
 
-const SignInForm: React.FC<Props> = ({authService}) => {
+const SignInForm: React.FC<Props> = ({ authService }) => {
     const classes = useStyles();
     const [authState, sendAuth] = useService(authService);
     const initialValues: SignInPayload = {
-        username: "",
-        password: "",
+        username: '',
+        password: '',
         remember: undefined,
     };
     let location = useLocation();
 
-    const signInPending = (payload: SignInPayload) => sendAuth({type: "LOGIN", ...payload});
+    const signInPending = (payload: SignInPayload) =>
+        sendAuth({ type: 'LOGIN', ...payload });
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <div className={classes.paper}>
                 {authState.context?.message && (
-                    <Alert data-test="signin-error" severity="error" className={classes.alertMessage}>
+                    <Alert
+                        data-test="signin-error"
+                        severity="error"
+                        className={classes.alertMessage}
+                    >
                         {authState.context.message}
                     </Alert>
                 )}
@@ -75,15 +87,23 @@ const SignInForm: React.FC<Props> = ({authService}) => {
                 <Formik
                     initialValues={initialValues}
                     validationSchema={validationSchema}
-                    onSubmit={async (values, {setSubmitting}) => {
+                    onSubmit={async (values, { setSubmitting }) => {
                         setSubmitting(true);
                         signInPending(values);
                     }}
                 >
-                    {({isValid, isSubmitting}) => (
+                    {({ isValid, isSubmitting }) => (
                         <Form className={classes.form}>
                             <Field name="username">
-                                {({field, meta: {error, value, initialValue, touched}}: FieldProps) => (
+                                {({
+                                    field,
+                                    meta: {
+                                        error,
+                                        value,
+                                        initialValue,
+                                        touched,
+                                    },
+                                }: FieldProps) => (
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -93,14 +113,30 @@ const SignInForm: React.FC<Props> = ({authService}) => {
                                         type="text"
                                         autoFocus
                                         data-test="signin-username"
-                                        error={(touched || value !== initialValue) && Boolean(error)}
-                                        helperText={touched || value !== initialValue ? error : ""}
+                                        error={
+                                            (touched ||
+                                                value !== initialValue) &&
+                                            Boolean(error)
+                                        }
+                                        helperText={
+                                            touched || value !== initialValue
+                                                ? error
+                                                : ''
+                                        }
                                         {...field}
                                     />
                                 )}
                             </Field>
                             <Field name="password">
-                                {({field, meta: {error, value, initialValue, touched}}: FieldProps) => (
+                                {({
+                                    field,
+                                    meta: {
+                                        error,
+                                        value,
+                                        initialValue,
+                                        touched,
+                                    },
+                                }: FieldProps) => (
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -109,8 +145,18 @@ const SignInForm: React.FC<Props> = ({authService}) => {
                                         type="password"
                                         id="password"
                                         data-test="signin-password"
-                                        error={touched && value !== initialValue && Boolean(error)}
-                                        helperText={touched && value !== initialValue && touched ? error : ""}
+                                        error={
+                                            touched &&
+                                            value !== initialValue &&
+                                            Boolean(error)
+                                        }
+                                        helperText={
+                                            touched &&
+                                            value !== initialValue &&
+                                            touched
+                                                ? error
+                                                : ''
+                                        }
                                         {...field}
                                     />
                                 )}
@@ -135,7 +181,6 @@ const SignInForm: React.FC<Props> = ({authService}) => {
                     )}
                 </Formik>
             </div>
-
         </Container>
     );
 };

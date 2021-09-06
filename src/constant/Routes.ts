@@ -1,6 +1,13 @@
 // show all pages in there
-const IMAGES: string = '/images', ARTICLE: string = '/articles', MEDIAS: string = '/medias', SOCKET: string = '/socket',
-    PROFILE: string = '/profile', MESSAGES: string = '/messages', NOTIFICATIONS: string = '/notifications',THEME:string='/theme',RESUMABLE_CLIENT:string='/resumable';
+const IMAGES: string = '/images',
+    ARTICLE: string = '/articles',
+    MEDIAS: string = '/medias',
+    SOCKET: string = '/socket',
+    PROFILE: string = '/profile',
+    MESSAGES: string = '/messages',
+    NOTIFICATIONS: string = '/notifications',
+    THEME: string = '/theme',
+    RESUMABLE_CLIENT: string = '/resumable';
 export {
     IMAGES,
     ARTICLE,
@@ -10,5 +17,5 @@ export {
     MESSAGES,
     NOTIFICATIONS,
     THEME,
-    RESUMABLE_CLIENT
-}
+    RESUMABLE_CLIENT,
+};

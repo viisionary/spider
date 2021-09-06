@@ -1,22 +1,25 @@
-import {createContext, useContext, useEffect, useState} from "react";
+// @ts-nocheck
+import { createContext, useContext, useEffect, useState } from 'react';
+import React from 'react';
 
 const sfxCache: { [key: string]: HTMLAudioElement } = {};
 const SettingsContext = createContext({
     soundEnabled: true,
-    // setSoundEnabled:undefined,
+    setSoundEnabled: undefined,
 });
-export const SettingsProvider = ({children}: any) => {
+export const SettingsProvider = ({ children }: any) => {
     const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
-    // @ts-ignore
-    return (<SettingsContext.Provider value={{soundEnabled, setSoundEnabled,}}>
-        {children}
-    </SettingsContext.Provider>)
-}
+    return (
+        <SettingsContext.Provider value={{ soundEnabled, setSoundEnabled }}>
+            {children}
+        </SettingsContext.Provider>
+    );
+};
 export const useSettings = () => {
-    const {
-        soundEnabled,
-        setSoundEnabled,
-    } = useContext<{ soundEnabled: boolean, setSoundEnabled?: any }>(SettingsContext);
+    const { soundEnabled, setSoundEnabled } =
+        useContext<{ soundEnabled: boolean; setSoundEnabled?: any }>(
+            SettingsContext
+        );
     const toggleSound = () => {
         const newSetting: boolean = !soundEnabled;
         setSoundEnabled(newSetting);
@@ -24,29 +27,32 @@ export const useSettings = () => {
     return {
         soundEnabled,
         toggleSound,
-    }
+    };
+};
 
-}
-
-function useSound(url: string, {soundEnabled}: { soundEnabled: boolean, volume: number, interrupt?: boolean }) {
+function useSound(
+    url: string,
+    {
+        soundEnabled,
+    }: { soundEnabled: boolean; volume: number; interrupt?: boolean }
+) {
     try {
         sfxCache[url] = new Audio(url);
         return [() => sfxCache[url].play()];
     } catch (e) {
-        return [() => {
-        }];
+        return [() => {}];
     }
 }
 
 export function useSfx() {
-    const {soundEnabled} = useSettings();
+    const { soundEnabled } = useSettings();
 
     const [playBoop] = useSound(
         'https://res.cloudinary.com/jlengstorf/video/upload/q_auto/v1593395252/jason.af/sfx/boop.mp3',
         {
             soundEnabled,
             volume: 0.5,
-        },
+        }
     );
 
     const [playPop] = useSound(
@@ -54,16 +60,13 @@ export function useSfx() {
         {
             soundEnabled,
             volume: 0.5,
-        },
+        }
     );
 
-    const [playClick] = useSound(
-        '/click.mp3',
-        {
-            soundEnabled,
-            volume: 0.5,
-        },
-    );
+    const [playClick] = useSound('/click.mp3', {
+        soundEnabled,
+        volume: 0.5,
+    });
 
     const [playAirhorn] = useSound(
         'https://res.cloudinary.com/jlengstorf/video/upload/q_auto/v1593395252/jason.af/sfx/airhorn.mp3',
@@ -71,7 +74,7 @@ export function useSfx() {
             soundEnabled,
             volume: 0.5,
             interrupt: true,
-        },
+        }
     );
 
     const [playPowerUp] = useSound(
@@ -79,7 +82,7 @@ export function useSfx() {
         {
             soundEnabled,
             volume: 0.5,
-        },
+        }
     );
 
     const [playPowerDown] = useSound(
@@ -87,7 +90,7 @@ export function useSfx() {
         {
             soundEnabled,
             volume: 0.5,
-        },
+        }
     );
 
     const [playHooray] = useSound(
@@ -95,7 +98,7 @@ export function useSfx() {
         {
             soundEnabled,
             volume: 0.5,
-        },
+        }
     );
 
     return {

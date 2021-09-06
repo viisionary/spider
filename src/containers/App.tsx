@@ -1,28 +1,28 @@
 import React from 'react';
-import {CssBaseline, makeStyles} from "@material-ui/core";
-import {authService} from "../machines/authMachine";
-import {useMachine, useService} from "@xstate/react";
+import { CssBaseline, makeStyles } from '@material-ui/core';
+import { authService } from '../machines/authMachine';
+import { useMachine, useService } from '@xstate/react';
 import AlertBar from '../components/AlertBar';
-import {snackbarMachine} from '../machines/snackbarMachine';
-import {Redirect, Route, Switch,} from "react-router-dom";
-import SignInForm from "./SignInForm";
-import bg from '../image/bg.jpg'
-import PrivateRoutesContainer from "./PrivateRoutesContainer";
-import {ItemsMachine} from "../machines/ItemsMachine";
-import Home from "./unauthorized/Home";
-import SignUpForm from "./SignUpForm";
-import {ARTICLE, THEME} from "../constant/Routes";
-import ArticleContainer from "./ArticleContainer";
-import ThemeContainer from "./ThemeContainer.";
+import { snackbarMachine } from '../machines/snackbarMachine';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import SignInForm from './SignInForm';
+import bg from '../image/bg.jpg';
+import PrivateRoutesContainer from './PrivateRoutesContainer';
+import { ItemsMachine } from '../machines/ItemsMachine';
+import Home from './unauthorized/Home';
+import SignUpForm from './SignUpForm';
+import { ARTICLE, THEME } from '../constant/Routes';
+import ArticleContainer from './ArticleContainer';
+import ThemeContainer from './ThemeContainer';
 
 const useStyles = makeStyles((theme) => ({
     topRoot: {
         background: `url(${bg}) center`,
         backgroundSize: 'cover',
-        display: "flex",
+        display: 'flex',
         flexGrow: 1,
-        height: "100vh",
-        overflow: "hidden",
+        height: '100vh',
+        overflow: 'hidden',
         flexDirection: 'column',
     },
 }));
@@ -48,21 +48,22 @@ const UnLoggedInRoutes: React.FC = () => {
             <Route path="/*">
                 <Redirect
                     to={{
-                        pathname: "/signin",
+                        pathname: '/signin',
                     }}
                 />
             </Route>
-        </Switch>)
-}
+        </Switch>
+    );
+};
 
 const App: React.FC = () => {
     const classes = useStyles();
     const [authState] = useService(authService);
 
-    const isLoggedIn = authState.matches("authorized")
+    const isLoggedIn = authState.matches('authorized');
     const [, , snackbarService] = useMachine(snackbarMachine);
 
-    const unauthorized = authState.matches("unauthorized")
+    const unauthorized = authState.matches('unauthorized');
     const [, , ItemsService] = useMachine(ItemsMachine);
 
     return (
@@ -79,8 +80,7 @@ const App: React.FC = () => {
             {unauthorized && <UnLoggedInRoutes />}
             <AlertBar snackbarService={snackbarService} />
         </div>
-    )
-}
-
+    );
+};
 
 export default App;

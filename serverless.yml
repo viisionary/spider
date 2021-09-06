@@ -5,22 +5,22 @@ component: website
 name: spider
 #  apigatewayConf
 apigatewayConf:
-  customDomains:
-    domain: blog.visionary.top
-    certificateId: oAOc1pSe # 证书 ID
-    # 这里将 API 网关的 release 环境映射到根路径
-    #    pathMappingSet:
-    #      - path: /
-    #        environment: release
-    protocols: https
+    customDomains:
+        domain: blog.visionary.top
+        certificateId: oAOc1pSe # 证书 ID
+        # 这里将 API 网关的 release 环境映射到根路径
+        #    pathMappingSet:
+        #      - path: /
+        #        environment: release
+        protocols: https
 #      - https
 inputs:
-  bucketName: spider
-  #  protocol: https
-  src:
-    src: ./
-    hook: npm run build
-    dist: ./build
-    envPath: ./
-    index: index.html
-    error: index.html
+    bucketName: spider
+    #  protocol: https
+    src:
+        src: ./
+        hook: npm run build
+        dist: ./build
+        envPath: ./
+        index: index.html
+        error: index.html

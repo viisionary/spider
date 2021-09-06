@@ -1,15 +1,27 @@
-import React, {useEffect, useRef, useState} from "react"
-import {Box, Button, CardActions, IconButton, TextField} from "@material-ui/core";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {flexColumn, flexColumnStretch, flexRow, flexRowBetween, fontFamily} from "../../styles";
-import signinLogo from '../../svg/signin.svg'
-import {Link} from "react-router-dom";
-import {ARTICLE} from "../../constant/Routes";
-import {tileData} from "../ArticleContainer";
-import InfoIcon from "@material-ui/icons/Info";
-import ArticleCard from "../../components/ArticleCard.";
-import {useSfx} from "../../hooks/useSfx";
-import happyHand from '../../image/HappyHand.png'
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    Box,
+    Button,
+    CardActions,
+    IconButton,
+    TextField,
+} from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {
+    flexColumn,
+    flexColumnStretch,
+    flexRow,
+    flexRowBetween,
+    fontFamily,
+} from '../../styles';
+import signinLogo from '../../svg/signin.svg';
+import { Link } from 'react-router-dom';
+import { ARTICLE } from '../../constant/Routes';
+import { tileData } from '../ArticleContainer';
+import InfoIcon from '@material-ui/icons/Info';
+import ArticleCard from '../../components/ArticleCard.';
+import { useSfx } from '../../hooks/useSfx';
+import happyHand from '../../image/HappyHand.png';
 
 /**
  Created by IntelliJ IDEA.
@@ -20,9 +32,7 @@ import happyHand from '../../image/HappyHand.png'
  描述：
  **/
 
-interface Props {
-}
-
+interface Props {}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,7 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
             background: 'white',
             overflow: 'auto',
             [theme.breakpoints.down('md')]: {},
-
         },
         header: {
             ...flexRow,
@@ -56,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
         bio: {
             padding: '5rem 5vw',
 
-            margin: 0
+            margin: 0,
         },
         sharesStories: {
             borderTop: '1px solid #d4d0e0',
@@ -64,20 +73,20 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         sharesStoriesH1: {
             textAlign: 'center',
-            color: '#78757f'
+            color: '#78757f',
         },
         footer: {
             ...flexRowBetween,
             padding: '2rem',
             fontSize: '.875rem',
             color: '#78757f',
-            background: '#fff'
+            background: '#fff',
         },
         hello: {
             padding: '5rem 5vw',
             background: theme.palette.secondary.main,
             borderTop: '1px solid #d4d0e0',
-            borderBottom: '1px solid #d4d0e0'
+            borderBottom: '1px solid #d4d0e0',
         },
         visionary: {
             color: theme.palette.primary.main,
@@ -85,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) =>
             fontSize: 100,
             padding: '0 30px 10px 30px',
             fontWeight: 800,
-            margin: '0 auto'
+            margin: '0 auto',
         },
         frontEnd: {
             fontSize: 100,
@@ -108,13 +117,13 @@ const useStyles = makeStyles((theme: Theme) =>
                 top: 0,
                 // backgroundColor: green[600],
             },
-        }
-    }),
+        },
+    })
 );
 type Issue = {
-    content: string,
-    time: Date
-}
+    content: string;
+    time: Date;
+};
 type Issues = Issue[];
 const Home: React.FC<Props> = ({}) => {
     const [open, setOpen] = React.useState(true);
@@ -122,27 +131,26 @@ const Home: React.FC<Props> = ({}) => {
         setOpen(!open);
     };
     const main = useRef<any>();
-    const {playAirhorn, playClick} = useSfx();
+    const { playAirhorn, playClick } = useSfx();
 
     useEffect(() => {
-        const ctx = main.current.getContext("2d");
-        console.log(ctx)
+        const ctx = main.current.getContext('2d');
+        console.log(ctx);
         // main.current = document.getElementById("main");
         // ctx && ctx.fillText(`visionary`,0 ,0);
 
-        ctx.font = "20px " + fontFamily;
-        ctx.fillText("Hello World!".toLocaleUpperCase(), 10, 50);
+        ctx.font = '20px ' + fontFamily;
+        ctx.fillText('Hello World!'.toLocaleUpperCase(), 10, 50);
 
+        const img = document.createElement('img');
+        img.src = happyHand;
+        ctx.drawImage(img, 0, 0);
 
-        const img = document.createElement('img')
-        img.src = happyHand
-        ctx.drawImage(img, 0, 0)
-
-        ctx.font = "60px" + fontFamily;
+        ctx.font = '60px' + fontFamily;
         const gradient = ctx.createLinearGradient(0, 0, main.current.width, 0);
-        gradient.addColorStop(Number("0"), "pink");
-        gradient.addColorStop(Number("0.5"), "yellow");
-        gradient.addColorStop(Number("1.0"), "blue");
+        gradient.addColorStop(Number('0'), 'pink');
+        gradient.addColorStop(Number('0.5'), 'yellow');
+        gradient.addColorStop(Number('1.0'), 'blue');
         ctx.fillStyle = gradient;
     }, [main]);
     const classes = useStyles();
@@ -153,52 +161,76 @@ const Home: React.FC<Props> = ({}) => {
         e.preventDefault();
         playClick();
         const now = new Date();
-        setIssues(prevArray => [...prevArray, {content, time: now}])
-        setContent('')
-    }
-    return <div className={classes.Home}>
-        <header className={classes.header}>
-            Visionary's Page
-            <IconButton aria-label="delete" component={Link} to={'/signin'} className={classes.signin} size="small">
-                <img src={signinLogo} alt="" />
-            </IconButton>
-        </header>
-        <div className={classes.headerAfter} />
-        <section className={classes.main}>
-            <canvas ref={main} className={classes.canvas} />
-            <span className={classes.frontEnd}>frontEnd</span>
-            <span className={classes.visionary}>visionary</span>
-            <p className={classes.bio}>
-                bio
-            </p>
-        </section>
-        <div className={classes.sharesStories}>
-            <h1 className={classes.sharesStoriesH1}>
-                shares stories about code (and not-code).
-                <Button component={Link} to={ARTICLE}>more</Button>
-            </h1>
-            <section>
-                {tileData.map((tile) => (
-                    tile.showIndex &&
-										<ArticleCard className={classes.cardContainer} title={tile.title} cover={tile.img} path={tile.path}
-										             key={tile.path} />
-                ))}
+        setIssues((prevArray) => [...prevArray, { content, time: now }]);
+        setContent('');
+    };
+    return (
+        <div className={classes.Home}>
+            <header className={classes.header}>
+                Visionary's Page
+                <IconButton
+                    aria-label="delete"
+                    component={Link}
+                    to={'/signin'}
+                    className={classes.signin}
+                    size="small"
+                >
+                    <img src={signinLogo} alt="" />
+                </IconButton>
+            </header>
+            <div className={classes.headerAfter} />
+            <section className={classes.main}>
+                <canvas ref={main} className={classes.canvas} />
+                <span className={classes.frontEnd}>frontEnd</span>
+                <span className={classes.visionary}>visionary</span>
+                <p className={classes.bio}>bio</p>
             </section>
-        </div>
-        <div className={classes.hello}>
-            <h1>issues</h1>
-            {issues.map(({content, time}) => (<p key={time.getTime()}>{content}</p>))}
-            <form noValidate autoComplete="on" onSubmit={handleComment}>
-                <TextField value={content} onChange={(e) => setContent(e.target.value)} id="outlined-basic"
-                           label="Outlined" variant="outlined" />
-                <Button type="submit">xiu ~ </Button>
-            </form>
-        </div>
-        <footer className={classes.footer}>
-            <span>powered by ''</span>
+            <div className={classes.sharesStories}>
+                <h1 className={classes.sharesStoriesH1}>
+                    shares stories about code (and not-code).
+                    <Button component={Link} to={ARTICLE}>
+                        more
+                    </Button>
+                </h1>
+                <section>
+                    {tileData.map(
+                        (tile) =>
+                            tile.showIndex && (
+                                <ArticleCard
+                                    className={classes.cardContainer}
+                                    title={tile.title}
+                                    cover={tile.img}
+                                    path={tile.path}
+                                    key={tile.path}
+                                />
+                            )
+                    )}
+                </section>
+            </div>
+            <div className={classes.hello}>
+                <h1>issues</h1>
+                {issues.map(({ content, time }) => (
+                    <p key={time.getTime()}>{content}</p>
+                ))}
+                <form noValidate autoComplete="on" onSubmit={handleComment}>
+                    <TextField
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        id="outlined-basic"
+                        label="Outlined"
+                        variant="outlined"
+                    />
+                    <Button type="submit">xiu ~ </Button>
+                </form>
+            </div>
+            <footer className={classes.footer}>
+                <span>powered by ''</span>
 
-            <Link rel="stylesheet" to="https://github.com/viisionary">source code</Link>
-        </footer>
-    </div>
-}
-export default Home
+                <Link rel="stylesheet" to="https://github.com/viisionary">
+                    source code
+                </Link>
+            </footer>
+        </div>
+    );
+};
+export default Home;

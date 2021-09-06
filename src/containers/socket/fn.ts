@@ -1,14 +1,18 @@
-import {local, serverAddress} from "../../constant/serverAddress";
+import { local, serverAddress } from '../../constant/serverAddress';
 
-const Client = require("socket.io-client");
+const Client = require('socket.io-client');
 
 export const buildSocket = () => {
-    return new Client(`${process.env.NODE_ENV === 'development' ? local : serverAddress}api/socket.io`);
-}
+    return new Client(
+        `${
+            process.env.NODE_ENV === 'development' ? local : serverAddress
+        }api/socket.io`
+    );
+};
 
-export const newVideo = ({remoteStream, containerId, userId}: any) => {
-    console.log(userId)
-    const existed: any = document.getElementById('GuestVideo#' + userId)
+export const newVideo = ({ remoteStream, containerId, userId }: any) => {
+    console.log(userId);
+    const existed: any = document.getElementById('GuestVideo#' + userId);
 
     if (existed) {
         existed.srcObject = remoteStream;
@@ -16,16 +20,15 @@ export const newVideo = ({remoteStream, containerId, userId}: any) => {
     }
 
     const GuestVideo: HTMLVideoElement = document.createElement('video');
-    GuestVideo.setAttribute('width', '300')
+    GuestVideo.setAttribute('width', '300');
     GuestVideo.autoplay = true;
     GuestVideo.srcObject = remoteStream;
-    GuestVideo.id = 'GuestVideo#' + userId
-    const videoContainer: any = document.getElementById(containerId)
+    GuestVideo.id = 'GuestVideo#' + userId;
+    const videoContainer: any = document.getElementById(containerId);
     videoContainer.appendChild(GuestVideo);
-}
+};
 
-export const removeVideo = ({containerId, userId}: any) => {
-    const GuestVideo: any = document.getElementById('GuestVideo#' + userId)
+export const removeVideo = ({ containerId, userId }: any) => {
+    const GuestVideo: any = document.getElementById('GuestVideo#' + userId);
     GuestVideo && GuestVideo.remove();
-
-}
+};

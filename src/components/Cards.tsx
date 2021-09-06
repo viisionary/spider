@@ -1,13 +1,13 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import {Link} from "react-router-dom";
-import {isEmpty} from 'lodash';
+import { Link } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 
 const useStyles = makeStyles({
     root: {
@@ -27,45 +27,64 @@ const useStyles = makeStyles({
 });
 
 type CardItemType = {
-    title: string, desc: string, id: string
-}
+    title: string;
+    desc: string;
+    id: string;
+};
 
 interface Prop {
-    items: CardItemType[]
+    items: CardItemType[];
 }
 
-const Cards: React.FC<Prop> = ({items}) => {
+const Cards: React.FC<Prop> = ({ items }) => {
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
-    console.log('items', items)
+    console.log('items', items);
 
     return (
         <Grid container spacing={2}>
-            {!isEmpty(items) && items.map(({title, desc, id}) => {
-                return <Grid key={id} item>
-                    <Card>
-                        <CardContent>
-                            <Typography className={classes.title} color="textSecondary" gutterBottom>
-                                {title}
-                            </Typography>
-                            <Typography variant="h5" component="h2">
-                                be{bull}nev{bull}o{bull}lent
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                adjective
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                well meaning and kindly.
-                                <br />
-                                {'"a benevolent smile"'}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button size="small" color="primary" component={Link} to={`/items/${id}`}>Learn
-                                More</Button>
-                        </CardActions>
-                    </Card></Grid>
-            })}
+            {!isEmpty(items) &&
+                items.map(({ title, desc, id }) => {
+                    return (
+                        <Grid key={id} item>
+                            <Card>
+                                <CardContent>
+                                    <Typography
+                                        className={classes.title}
+                                        color="textSecondary"
+                                        gutterBottom
+                                    >
+                                        {title}
+                                    </Typography>
+                                    <Typography variant="h5" component="h2">
+                                        be{bull}nev{bull}o{bull}lent
+                                    </Typography>
+                                    <Typography
+                                        className={classes.pos}
+                                        color="textSecondary"
+                                    >
+                                        adjective
+                                    </Typography>
+                                    <Typography variant="body2" component="p">
+                                        well meaning and kindly.
+                                        <br />
+                                        {'"a benevolent smile"'}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <Button
+                                        size="small"
+                                        color="primary"
+                                        component={Link}
+                                        to={`/items/${id}`}
+                                    >
+                                        Learn More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    );
+                })}
         </Grid>
     );
 };

@@ -4,6 +4,6 @@ export const api = {
         list: '',
         details: '',
         create: '',
-        delete: ''
-    }
-}
+        delete: '',
+    },
+};

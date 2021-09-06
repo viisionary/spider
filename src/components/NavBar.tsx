@@ -1,5 +1,10 @@
 import React from 'react';
-import {createStyles, fade, makeStyles, Theme} from '@material-ui/core/styles';
+import {
+    createStyles,
+    fade,
+    makeStyles,
+    Theme,
+} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,10 +17,10 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import logo from '../svg/007-hacker.svg'
-import {Button} from '@material-ui/core';
-import {Link} from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
+import logo from '../svg/007-hacker.svg';
+import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -98,17 +103,18 @@ const useStyles = makeStyles((theme: Theme) =>
                 display: 'none',
             },
         },
-    }),
+    })
 );
 
 interface Props {
     onDrawerToggle: () => void;
 }
 
-const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
+const NavBar: React.FC<Props> = ({ onDrawerToggle }) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
+        React.useState<null | HTMLElement>(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -134,10 +140,10 @@ const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
     const renderMenu = (
         <Menu
             anchorEl={anchorEl}
-            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             id={menuId}
             keepMounted
-            transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
@@ -150,15 +156,20 @@ const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
     const renderMobileMenu = (
         <Menu
             anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
             id={mobileMenuId}
             keepMounted
-            transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton aria-label="show 4 new mails" color="inherit" component={Link} to={'/messages'}>
+                <IconButton
+                    aria-label="show 4 new mails"
+                    color="inherit"
+                    component={Link}
+                    to={'/messages'}
+                >
                     <Badge badgeContent={4} color="secondary">
                         <MailIcon />
                     </Badge>
@@ -166,7 +177,12 @@ const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
                 <p>Messages</p>
             </MenuItem>
             <MenuItem>
-                <IconButton aria-label="show 17 new notifications" color="inherit" component={Link} to={'/notifications'}>
+                <IconButton
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                    component={Link}
+                    to={'/notifications'}
+                >
                     <Badge badgeContent={17} color="secondary">
                         <NotificationsIcon />
                     </Badge>
@@ -213,7 +229,7 @@ const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
-                            inputProps={{'aria-label': 'search'}}
+                            inputProps={{ 'aria-label': 'search' }}
                         />
                     </div>
                     <IconButton
@@ -224,15 +240,31 @@ const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Button color="inherit" to="/getting-started" component={Link}>get start</Button>
+                    <Button
+                        color="inherit"
+                        to="/getting-started"
+                        component={Link}
+                    >
+                        get start
+                    </Button>
                     <div className={classes.grow} />
                     <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 4 new mails" color="inherit" component={Link} to={'/messages'}>
+                        <IconButton
+                            aria-label="show 4 new mails"
+                            color="inherit"
+                            component={Link}
+                            to={'/messages'}
+                        >
                             <Badge badgeContent={4} color="secondary">
                                 <MailIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit" component={Link} to={'/notifications'}>
+                        <IconButton
+                            aria-label="show 17 new notifications"
+                            color="inherit"
+                            component={Link}
+                            to={'/notifications'}
+                        >
                             <Badge badgeContent={17} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
@@ -265,6 +297,6 @@ const NavBar: React.FC<Props> = ({onDrawerToggle}) => {
             {renderMenu}
         </div>
     );
-}
+};
 
 export default NavBar;

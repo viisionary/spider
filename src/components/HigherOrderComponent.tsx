@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 const styles = {
@@ -15,11 +15,11 @@ const styles = {
 };
 
 type PropTypes = {
-    classes: any
-}
+    classes: any;
+};
 
 function HigherOrderComponent(props: PropTypes) {
-    const {classes} = props;
+    const { classes } = props;
     return <Button className={classes.root}>Higher-order component</Button>;
 }
 
