@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
 import { Interpreter } from 'xstate';
-import { AuthMachineContext, AuthMachineEvents } from '../machines/authMachine';
+import {AuthMachineContext, AuthMachineEvents, AuthService} from '../machines/authMachine';
 import { adminMenu } from '../constant/menuRoute';
 import {makeStyles} from "@mui/styles";
 import {theme} from "../theme";
 import {Box, Container, Grid} from "@mui/material";
+import NavBar from "./NavBar";
+import AsideBar, {DrawerService} from "./AsideBar";
 
-interface Props {
+interface Props extends DrawerService, AuthService{
     children: React.ReactNode;
-    authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
-    // notificationsService: Interpreter<DataContext, any, DataEvents, any>;
 }
 
 const useStyles = makeStyles(() => ({
@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
     topContainer: { display: 'flex' },
     innerContent: {},
 }));
-const MainLayout: React.FC<Props> = ({ children, authService }) => {
+const MainLayout: React.FC<Props> = ({ drawerService, children, authService }) => {
     const classes = useStyles();
 
     const asideBar = useRef(null);
@@ -53,8 +53,9 @@ const MainLayout: React.FC<Props> = ({ children, authService }) => {
 
     return (
         <>
-            {/*<NavBar onDrawerToggle={handleDrawerToggle} />*/}
+            <NavBar onDrawerToggle={handleDrawerToggle}  authService={authService} drawerService={drawerService}/>
             <Box className={classes.outSideLayout}>
+                <AsideBar config={[]} ref={asideBar} drawerService={drawerService} />
                 {/*<AsideBar config={adminMenu} ref={asideBar} />*/}
                 <main className={classes.mainLayout}>
                     <Container maxWidth="lg" className={classes.topContainer}>

@@ -1,5 +1,5 @@
 // @ts-ignore
-import { assign, interpret, Machine, State } from 'xstate';
+import {assign, interpret, Interpreter, Machine, State} from 'xstate';
 import { omit } from 'lodash';
 import { httpClient } from '../utils/asyncUtils';
 import { history } from '../utils/historyUtils';
@@ -71,9 +71,11 @@ export const authMachine = Machine<
             performLogin: async (ctx, event) => {
                 return await httpClient
                     .post(`/api/user/login`, event)
-                    .then(({ data }) => {
-                        history.push('/');
-                        return { user: data };
+                    .then((res) => {
+                        console.log('res',res)
+                        // history.push('/');
+                        return {user:{}}
+                        // return { user: data };
                     })
                     .catch(
                         ({
@@ -165,3 +167,7 @@ export const authService = interpret(authMachine)
         }
     })
     .start(resolvedState);
+
+export interface AuthService {
+    authService: Interpreter<AuthMachineContext, any, AuthMachineEvents, any>;
+}

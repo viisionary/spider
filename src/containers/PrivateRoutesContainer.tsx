@@ -30,6 +30,8 @@ import {ResumableClientContainer} from "./resumableClient/ResumableClientContain
 import ProfileContainer from "./profile/ProfileContainer";
 import NotificationsContainer from "./notifications/NotificationsContainer";
 import MessagesContainer from "./messages/MessagesContainer.";
+import generateBaseModalMachine from "spider-vision/BaseDialogModal/baseModalMachine";
+import {useMachine} from "@xstate/react";
 
 export interface Props {
     isLoggedIn: boolean;
@@ -47,11 +49,13 @@ const PrivateRoutesContainer: React.FC<Props> = ({
                                                      authService,
                                                      snackbarService,
                                                  }) => {
-    return (
-        <MainLayout authService={authService}>
-            {/*<PrivateRoute isLoggedIn={isLoggedIn} exact path={'/'}>*/}
-            {/*    <Home />*/}
-            {/*</PrivateRoute>*/}
+    const [, , drawerService] = useMachine(generateBaseModalMachine({initial: "visible"}));
+
+    // @ts-ignore
+    return (<MainLayout authService={authService} drawerService={drawerService}>
+            <PrivateRoute isLoggedIn={isLoggedIn} exact path={'/'}>
+                {/*<Home />*/}
+            </PrivateRoute>
             {/*<PrivateRoute*/}
             {/*    isLoggedIn={isLoggedIn}*/}
             {/*    exact*/}

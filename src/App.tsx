@@ -3,6 +3,8 @@ import {makeStyles} from "@mui/styles";
 import {authService} from "./machines/authMachine";
 import snackbarMachine from "spider-vision/AlertBar/snackbarMachine";
 import AlertBar from "spider-vision/AlertBar/AlertBar";
+import CustomSelected from "spider-vision/Form/CustomSelected";
+
 import {ItemsMachine} from "./machines/ItemsMachine";
 import {useActor, useMachine} from "@xstate/react";
 import {Home} from "@mui/icons-material";
@@ -14,6 +16,8 @@ import {ARTICLE, THEME} from "./constant/Routes";
 import ArticleContainer from "./containers/ArticleContainer";
 import SignUpForm from "./containers/SignUpForm";
 import SignInForm from "./containers/SignInForm";
+import PrivateRoutesContainer from "./containers/PrivateRoutesContainer";
+import VideoPlayer from "./containers/VideoPlayer";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -32,10 +36,9 @@ const UnLoggedInRoutes: React.FC = () => {
                 <Route path="/signup" element={<SignUpForm
                     // @ts-ignore
                     authService={authService}/>}>
-
                 </Route>
-                <Route path="/" element={<Home/>}/>
-                <Route path={ARTICLE} element={<ArticleContainer/>}/>
+                <Route path={'/videoPlayer'} element={<VideoPlayer />}/>
+
                 <Route path={THEME} element={<ThemeContainer/>}/>
             </>
             <Route path="/*" element={<Navigate
@@ -60,12 +63,13 @@ function App() {
     return (
         <BrowserRouter>
             <div className={classes.topRoot}>
-                {/*{isLoggedIn && (*/}
-                {/*    // @ts-ignore*/}
+                {isLoggedIn && (
+                    // @ts-ignore
 
-                {/*    <Routes> <><PrivateRoutesContainer isLoggedIn={isLoggedIn} authService={authService} snackbarService={snackbarService} ItemsService={ItemsService}/> </></Routes>*/}
-                {/*)}*/}
+                    <Routes> <><PrivateRoutesContainer isLoggedIn={isLoggedIn} authService={authService} snackbarService={snackbarService} ItemsService={ItemsService}/> </></Routes>
+                )}
                 {unauthorized && <UnLoggedInRoutes/>}
+
                 <AlertBar
                     // @ts-ignore
                     snackbarService={snackbarService}/>

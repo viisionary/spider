@@ -1,3 +1,5 @@
+import {endsWith} from "lodash";
+
 export function getLocation(): Promise<string> {
     return new Promise((resolve, rejects) => {
         function success(position: any) {
@@ -15,4 +17,13 @@ export function getLocation(): Promise<string> {
             navigator.geolocation.getCurrentPosition(success, error);
         }
     });
+}
+
+export const checkProtocol: (url: string) => { isFlv: boolean, isHls: boolean } = (url) => {
+    const isFlv = endsWith(url, '.flv')
+    const isHls = endsWith(url, '.m3u8')
+    return {
+        isFlv,
+        isHls
+    }
 }
